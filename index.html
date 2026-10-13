@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='3' width='24' height='27' rx='3' fill='%23FFFDF7'/%3E%3Crect x='7' y='6' width='18' height='16' fill='%23C2385A'/%3E%3Crect x='4' y='3' width='24' height='27' rx='3' fill='none' stroke='%232A211B' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..900;1,9..144,500..900&family=Karla:wght@400;500;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..900;1,9..144,500..900&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --papel:#F5EFE3; --creme:#FFFDF7; --papel-2:#EDE4D0;
@@ -319,73 +319,31 @@
     html{ scroll-behavior:auto }
   }
 </style>
+<style>
+  .rodape-zip{ max-width:1240px; margin:0 auto; padding:10px 22px 96px; display:flex; justify-content:center }
+  .rodape-zip .btn{ padding:18px 34px; font-size:1.05rem }
+</style>
 </head>
 <body>
 
 <canvas id="confete" aria-hidden="true"></canvas>
 
-<nav class="topbar" id="topbar" aria-label="Barra de ações">
-  <span class="marca">Fotos da Daphnye</span>
-  <span class="conta-mini" id="contaMini"></span>
-  <button class="btn btn-primario btn-mini js-zip" type="button">
-    <span class="btn-fill js-zip-fill" aria-hidden="true"></span>
-    <span class="btn-rotulo"><i data-ic="pacote" data-tam="16"></i><span class="js-zip-txt">Baixar tudo (.zip)</span></span>
-  </button>
-</nav>
-
 <main>
-  <header class="hero-wrap">
-    <svg class="selo" viewBox="0 0 120 120" aria-hidden="true">
-      <circle cx="60" cy="60" r="57" fill="none" stroke="#2A211B" stroke-width="1.5"/>
-      <circle cx="60" cy="60" r="30" fill="none" stroke="#2A211B" stroke-width="1"/>
-      <g class="gira">
-        <defs><path id="anel" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
-        <text font-family="Karla, sans-serif" font-size="10.6" font-weight="700" letter-spacing="1.6" fill="#2A211B" opacity=".85">
-          <textPath href="#anel">FESTA DA DAPHNYE • ÁLBUM DA FAMÍLIA •</textPath>
-        </text>
-      </g>
-      <path d="M60 76c-7-5.2-15.5-11.6-15.5-19.4 0-5 4-8.6 8.4-8.6 3 0 5.6 1.7 7.1 4.1 1.5-2.4 4.1-4.1 7.1-4.1 4.4 0 8.4 3.6 8.4 8.6C75.5 64.4 67 70.8 60 76z" fill="#C2385A"/>
-    </svg>
-
-    <div class="hero">
-      <span class="pill"><i data-ic="camera" data-tam="15"></i>Álbum da festa</span>
-      <span class="pill" id="pillData" hidden><i data-ic="calendario" data-tam="15"></i><span id="pillDataTxt"></span></span>
-
-      <h1 class="titulo">As fotos do<br><em>aniversário</em> da
-        <span class="nome">Daphnye<svg viewBox="0 0 220 22" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 14 C 50 5, 92 20, 132 12 S 202 7, 216 13"/></svg></span>
-      </h1>
-
-      <p class="hero-sub">Clique numa foto para ver de pertinho e baixar as suas favoritas — ou leve o álbum inteiro num único arquivo zip.</p>
-
-      <div class="hero-acoes">
-        <button class="btn btn-primario js-zip" id="btnZipHero" type="button">
-          <span class="btn-fill js-zip-fill" aria-hidden="true"></span>
-          <span class="btn-rotulo"><i data-ic="pacote" data-tam="18"></i><span class="js-zip-txt">Baixar todas as fotos (.zip)</span></span>
-        </button>
-        <a class="btn btn-fantasma" href="#mural">Ver as fotos <i data-ic="setaBaixo" data-tam="17"></i></a>
-      </div>
-    </div>
+  <header class="hero">
+    <h1 class="titulo">As fotos do<br><em>aniversário</em> da
+      <span class="nome">Daphnye<svg viewBox="0 0 220 22" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 14 C 50 5, 92 20, 132 12 S 202 7, 216 13"/></svg></span>
+    </h1>
   </header>
 
-  <section class="ferramentas">
-    <p class="conta" id="conta"></p>
-    <label class="busca">
-      <i data-ic="lupa" data-tam="17"></i>
-      <input type="search" id="busca" placeholder="Procurar foto…" aria-label="Procurar foto pelo nome">
-    </label>
-  </section>
-
   <section class="mural" id="mural" aria-label="Galeria de fotos"></section>
-  <p class="sem-resultado" id="semResultado"></p>
   <div id="estado" aria-live="polite"></div>
 
-  <footer>
-    <p>Feito com <svg class="coracao ic" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-8-5.5-10.5-10C-.4 7 2 3.5 5.7 3.5 8.2 3.5 10.3 5 12 7c1.7-2 3.8-3.5 6.3-3.5C22 3.5 24.4 7 22.5 11 20 15.5 12 21 12 21z"/></svg> carinho para a família da Daphnye — aproveitem as memórias.</p>
-    <p>O zip é montado aqui no seu navegador — nada é enviado para lugar nenhum.</p>
-    <button class="btn-manutencao" id="btnRodapeGerador" type="button">
-      <i data-ic="arquivo" data-tam="14"></i> Ferramenta: gerar fotos.json
+  <div class="rodape-zip">
+    <button class="btn btn-primario js-zip" id="btnZip" type="button">
+      <span class="btn-fill js-zip-fill" aria-hidden="true"></span>
+      <span class="btn-rotulo"><i data-ic="pacote" data-tam="18"></i><span class="js-zip-txt">Baixar todas as fotos (.zip)</span></span>
     </button>
-  </footer>
+  </div>
 </main>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
@@ -401,41 +359,8 @@
         <p class="lb-aviso" id="lbAviso" hidden>Esse formato de foto não abre neste navegador,<br>mas o download funciona normalmente. ⬇</p>
         <img id="lbImg" alt="">
       </div>
-      <figcaption class="legenda" id="lbLegenda"></figcaption>
     </figure>
     <button class="btn btn-primario" id="lbBaixar" type="button"><i data-ic="download" data-tam="18"></i>Baixar esta foto</button>
-  </div>
-</div>
-
-<!-- modal gerador de fotos.json -->
-<div class="modal" id="modalGerador" role="dialog" aria-modal="true" aria-label="Gerador de fotos.json">
-  <div class="modal-fundo" id="modalFundo"></div>
-  <div class="cartao-modal">
-    <button class="fechar-modal" id="fecharModal" aria-label="Fechar"><i data-ic="x" data-tam="18"></i></button>
-    <h2>Gerar o arquivo <code>fotos.json</code></h2>
-    <p class="sub">Este arquivo diz ao site quais fotos existem. Funciona na Vercel, Netlify, GitHub Pages — em qualquer lugar, até com repositório privado.</p>
-
-    <div class="zona-drop" id="zonaDrop" tabindex="0" role="button" aria-label="Escolher a pasta com as fotos">
-      <div><i data-ic="pasta" data-tam="34"></i></div>
-      <strong>Arraste aqui a pasta com as fotos</strong>
-      <span>ou clique para escolher a pasta no seu computador</span>
-    </div>
-    <input type="file" id="inpPasta" webkitdirectory multiple hidden>
-
-    <div class="lista-gerada" id="listaGerada" hidden>
-      <p class="conta-gerada" id="contaGerada"></p>
-      <p class="amostra" id="amostraGerada"></p>
-      <div class="saida-json">
-        <textarea id="txtJson" readonly aria-label="Conteúdo do fotos.json"></textarea>
-      </div>
-      <div class="acoes" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px">
-        <button class="btn btn-primario btn-mini" id="btnBaixarJson" type="button"><i data-ic="download" data-tam="16"></i>Baixar fotos.json</button>
-        <button class="btn btn-fantasma btn-mini" id="btnCopiarJson" type="button"><i data-ic="copiar" data-tam="16"></i>Copiar conteúdo</button>
-      </div>
-      <div class="passo-final">
-        <strong>Último passo:</strong> salve este arquivo na <strong>raiz do projeto</strong> (ao lado do <code>index.html</code>) e faça o commit/push. A Vercel publica sozinha e as fotos aparecem.
-      </div>
-    </div>
   </div>
 </div>
 
@@ -444,22 +369,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 /* ================================================================
-   ⚙️  CONFIGURAÇÃO — normalmente NÃO precisa mexer em NADA.
-   ----------------------------------------------------------------
-   O site procura as fotos nesta ordem:
-   1) fotos.json  → arquivo na raiz do projeto (funciona em QUALQUER
-      hospedagem: Vercel, Netlify, GitHub Pages… até repo privado).
-      Gere o seu pelo botão "Ferramenta: gerar fotos.json" no rodapé.
-   2) API do GitHub → modo automático (repo público; preencha os
-      campos abaixo se estiver FORA do github.io).
-================================================================ */
+   CONFIGURAÇÃO
+   O site lê as fotos da pasta "fotos" do repositório do GitHub.
+=============================================================== */
 const CONFIG = {
-  usuario:     "",   // ex.: "maria-silva"   — só para o modo GitHub fora do Pages
-  repositorio: "",   // ex.: "fotos-daphnye" — só para o modo GitHub fora do Pages
-  branch:      "",   // vazio = descobre sozinho
-  dataDaFesta: "",   // opcional — ex.: "14 de março de 2025"
-  miniaturasRapidas: true,  // acelera a galeria; se algo estranho, mude para false
-  listaManual: []    // plano C: ["fotos/IMG_0001.jpg", ...] — ignora tudo o resto
+  usuario:     "cbryan99",
+  repositorio: "fotos-daphnye",
+  branch:      "",
+  miniaturasRapidas: true
 };
 
 /* ============ utilidades ============ */
@@ -468,28 +385,19 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const ICONES = {
   download:'<path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/>',
   pacote:'<path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/>',
-  lupa:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
   x:'<path d="M6 6l12 12M18 6 6 18"/>',
   esq:'<path d="m14 6-6 6 6 6"/>',
   dir:'<path d="m10 6 6 6-6 6"/>',
   check:'<path d="m5 13 4 4 10-10"/>',
   alerta:'<path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4"/><path d="M12 17.2v.1"/>',
   camera:'<path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/>',
-  calendario:'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
-  setaBaixo:'<path d="M12 4v14"/><path d="m6 12 6 6 6-6"/>',
-  github:'<path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/>',
-  arquivo:'<path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8Z"/><path d="M14 3v5h5"/>',
-  copiar:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
-  pasta:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/>',
   loader:'<path d="M21 12a9 9 0 1 1-6.2-8.56"/>'
 };
 function icone(nome, tam = 18){
   return `<svg class="ic" width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES[nome] || ''}</svg>`;
 }
 function preencherIcones(raiz = document){
-  raiz.querySelectorAll('[data-ic]').forEach(el => {
-    el.outerHTML = icone(el.dataset.ic, +(el.dataset.tam || 18));
-  });
+  raiz.querySelectorAll('[data-ic]').forEach(el => { el.outerHTML = icone(el.dataset.ic, +(el.dataset.tam || 18)); });
 }
 class ErroPag extends Error {}
 
@@ -571,11 +479,7 @@ const Confete = (() => {
   return { chuva, pop };
 })();
 
-/* ============ diagnósticos (aparecem nos cartões de erro) ============ */
-const diag = [];
-function registrarDiag(rotulo, ok, detalhe){ diag.push({ rotulo, ok, detalhe }); }
-
-/* ============ descobrir usuário/repositório (modo GitHub) ============ */
+/* ============ descobrir usuário/repositório ============ */
 function resolverCfg(){
   let usuario = (CONFIG.usuario || '').trim(), repo = (CONFIG.repositorio || '').trim();
   if (!usuario || !repo){
@@ -586,14 +490,14 @@ function resolverCfg(){
       usuario = usuario || dono;
       repo = repo || (seg.length ? seg[0] : dono);
     } else {
-      throw new ErroPag('cfg'); // fora do GitHub Pages e sem CONFIG → não há como adivinhar
+      throw new ErroPag('cfg');
     }
   }
-  return { usuario, repo, branch:(CONFIG.branch || '').trim() };
+  return { usuario, repositorio:repo, branch:(CONFIG.branch || '').trim() };
 }
 
 /* ============ API do GitHub (com cache p/ evitar limite por hora) ============ */
-const CHAVE_CACHE = 'album-daphnye:v3';
+const CHAVE_CACHE = 'album-daphnye:v4';
 const TTL_CACHE = 5 * 60 * 1000;
 async function gh(url){
   const r = await fetch(url, { headers:{ 'Accept':'application/vnd.github+json' } });
@@ -617,45 +521,21 @@ function limparCache(){ try { localStorage.removeItem(CHAVE_CACHE); } catch(_){}
 const rawUrl = (u, r, b, path) =>
   `https://raw.githubusercontent.com/${u}/${r}/${b}/${path.split('/').map(encodeURIComponent).join('/')}`;
 
-/* ============ estado da página (erros / vazio) ============ */
-function mostrarEstado(chave, cfg){
+/* ============ estado de erro ============ */
+function mostrarEstado(chave){
   const est = $('#estado');
-  const botaoGerador = `<button class="btn btn-primario btn-mini js-abrir-gerador" type="button">${icone('arquivo', 16)} Gerar meu fotos.json</button>`;
-  const linkRepo = cfg ? `<a class="btn btn-fantasma btn-mini" href="https://github.com/${cfg.usuario}/${cfg.repositorio}" target="_blank" rel="noopener">${icone('github', 16)} Abrir o repositório</a>` : '';
-  const testeJson = `<a class="btn btn-fantasma btn-mini" href="fotos.json" target="_blank" rel="noopener">${icone('lupa', 16)} Testar fotos.json</a>`;
-
-  const blocos = {
-    cfg: { titulo:'Este site está fora do GitHub Pages', itens:[
-      'O modo automático do GitHub só se ativa em endereços <code>*.github.io</code> — na Vercel ele não sabe qual é o seu repositório.',
-      '<strong>Caminho garantido:</strong> gere o arquivo <code>fotos.json</code> com o botão abaixo, salve na raiz do projeto (ao lado do <code>index.html</code>) e publique.',
-      'Alternativa: se o seu repositório GitHub for <strong>público</strong>, preencha <code>usuario</code> e <code>repositorio</code> no bloco CONFIG do script.' ], acoes: botaoGerador },
-    e404: { titulo:'Repositório não encontrado — ou é privado', itens:[
-      'A API do GitHub só enxerga repositórios <strong>públicos</strong>. Se o seu é privado (comum em projetos importados na Vercel), ela responde 404 — sem erro, sem foto.',
-      '<strong>Caminho garantido:</strong> use o <code>fotos.json</code> (botão abaixo). Ele funciona até com repositório privado.',
-      'Se acha que o repo é público, confira o nome dele no link abaixo.' ], acoes: botaoGerador + linkRepo },
-    e403: { titulo:'O GitHub pediu uma pausa', itens:[
-      'O GitHub limita as consultas por hora a cada visitante. Espere alguns minutos e tente de novo.',
-      'Você também pode eliminar essa dependência usando o <code>fotos.json</code> (botão abaixo).' ], acoes: botaoGerador },
-    vazio: { titulo:'Achei a fonte, mas nenhuma foto nela', itens:[
-      'Se você usa <code>fotos.json</code>: abra-o e veja se a lista está preenchida.',
-      'Se usa o modo GitHub: confira no link abaixo se as fotos aparecem na lista de arquivos do repositório (upload só vale depois do commit).',
-      'Contam como foto: <code>jpg, png, webp, gif, bmp, avif, heic, tiff</code>.' ], acoes: botaoGerador + linkRepo },
-    rede: { titulo:'Não consegui falar com o GitHub', itens:[
-      'Confira a sua conexão com a internet e tente de novo.' ], acoes: botaoGerador },
-    falha: { titulo:'Nada encontrado — aqui está o diagnóstico', itens: diag.map(d =>
-      `<span class="${d.ok ? 'ok' : 'nok'}" style="display:inline-flex;align-items:flex-start;gap:8px">${icone(d.ok ? 'check' : 'alerta', 15)}<span><strong>${esc(d.rotulo)}</strong> — ${esc(d.detalhe)}</span></span>`),
-      listaClasse:'diag-lista', acoes: botaoGerador + testeJson }
+  const msgs = {
+    cfg:  'Não consegui identificar o álbum.',
+    e404: 'Não encontrei as fotos.',
+    e403: 'O GitHub pediu uma pausa. Espere alguns minutos.',
+    rede: 'Não consegui falar com o GitHub. Confira a internet.',
+    vazio:'Ainda não há fotos aqui.'
   };
-  const b = blocos[chave] || blocos.rede;
   est.innerHTML = `<div class="card-estado">
-      <div class="cabeca">${icone('alerta', 26)}<h2>${b.titulo}</h2></div>
-      <${b.listaClasse ? 'ul class="' + b.listaClasse + '"' : 'ul'}>${(b.itens || []).map(i => `<li>${i}</li>`).join('')}</ul>
-      <div class="acoes">${b.acoes || ''}
-        <button class="btn btn-fantasma" id="btnTentar">${icone('loader', 16)} Tentar de novo</button>
-      </div>
+      <div class="cabeca">${icone('alerta', 26)}<h2>${msgs[chave] || msgs.rede}</h2></div>
+      <button class="btn btn-fantasma" id="btnTentar">${icone('loader', 16)} Tentar de novo</button>
     </div>`;
   preencherIcones(est);
-  est.querySelectorAll('.js-abrir-gerador').forEach(x => x.addEventListener('click', abrirGerador));
   $('#btnTentar').addEventListener('click', () => { limparCache(); iniciar(); });
 }
 
@@ -685,7 +565,7 @@ function esqueletos(n = 6){
     const d = document.createElement('div');
     d.className = 'polaroid esqueleto';
     d.style.cssText = `--rot:${ROT[i%8]}deg; --dy:${DY[i%8]}px; --w:${LARG[i%8]}px; --fita-rot:${FITA_ROT[i%8]}deg; --fita:${FITAS[i%3]}`;
-    d.innerHTML = `<div class="janela"></div><div class="leg-bar"></div>`;
+    d.innerHTML = `<div class="janela"></div>`;
     mural.appendChild(d);
   }
 }
@@ -696,10 +576,9 @@ function cartao(foto, i){
   el.style.cssText = `--rot:${ROT[i%8]}deg; --dy:${DY[i%8]}px; --w:${LARG[i%8]}px; --fita-rot:${FITA_ROT[i%8]}deg; --fita:${FITAS[i%3]}`;
   el.innerHTML = `
     <div class="janela">
-      <img src="${esc(foto.thumb)}" alt="${esc(foto.nomeBonito)}" loading="lazy" decoding="async">
-      <button class="btn-baixar" type="button" aria-label="Baixar ${esc(foto.nome)}" title="Baixar esta foto">${icone('download', 18)}</button>
-    </div>
-    <figcaption class="legenda">${esc(foto.nomeBonito)}</figcaption>`;
+      <img src="${esc(foto.thumb)}" alt="" loading="lazy" decoding="async">
+      <button class="btn-baixar" type="button" aria-label="Baixar esta foto" title="Baixar esta foto">${icone('download', 18)}</button>
+    </div>`;
   const img = el.querySelector('img');
   img.onerror = () => {
     if (img.dataset.planoB !== '1' && !img.src.includes(foto.urlDownload)){
@@ -709,7 +588,7 @@ function cartao(foto, i){
       const j = el.querySelector('.janela');
       j.classList.add('sem-previa');
       j.innerHTML = `${icone('camera', 30)}<span>Prévia não abre no navegador —<br>use o botão para baixar.</span>
-        <button class="btn-baixar" type="button" aria-label="Baixar ${esc(foto.nome)}" title="Baixar esta foto">${icone('download', 18)}</button>`;
+        <button class="btn-baixar" type="button" aria-label="Baixar esta foto" title="Baixar esta foto">${icone('download', 18)}</button>`;
     }
   };
   return el;
@@ -721,41 +600,7 @@ function renderFotos(){
   mural.innerHTML = '';
   fotos.forEach((f, i) => mural.appendChild(cartao(f, i)));
   ordem = fotos.map((_, i) => i);
-  atualizarConta(fotos.length);
   Confete.chuva(90);
-}
-
-function atualizarConta(visiveis){
-  const c = $('#conta');
-  if (visiveis < fotos.length){
-    c.innerHTML = `<strong>${visiveis}</strong> de ${fotos.length} fotos aparecendo`;
-  } else {
-    c.innerHTML = `<strong>0</strong> fotos esperando por você · passe o mouse numa foto para baixá-la`;
-    const strong = c.querySelector('strong');
-    const t0 = performance.now(), dur = 900, alvo = fotos.length;
-    (function passo(t){
-      const p = Math.min(1, (t - t0) / dur);
-      strong.textContent = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(passo);
-    })(t0);
-  }
-  $('#contaMini').textContent = fotos.length ? `${fotos.length} fotos` : '';
-}
-
-function aplicarBusca(){
-  const q = $('#busca').value.trim().toLowerCase();
-  ordem = [];
-  let visiveis = 0;
-  document.querySelectorAll('#mural .polaroid:not(.esqueleto)').forEach(el => {
-    const i = +el.dataset.idx, f = fotos[i];
-    const bate = !q || f.nome.toLowerCase().includes(q) || f.nomeBonito.toLowerCase().includes(q);
-    el.style.display = bate ? '' : 'none';
-    if (bate){ ordem.push(i); visiveis++; }
-  });
-  atualizarConta(visiveis);
-  const sr = $('#semResultado');
-  if (q && visiveis === 0){ sr.textContent = `Nenhuma foto com “${q}” — tenta outro nome?`; sr.classList.add('visivel'); }
-  else sr.classList.remove('visivel');
 }
 
 /* ============ download individual ============ */
@@ -831,11 +676,11 @@ async function baixarTudo(){
     a.download = 'fotos-aniversario-da-daphnye.zip';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 8000);
-    const r = $('#btnZipHero').getBoundingClientRect();
+    const r = $('#btnZip').getBoundingClientRect();
     Confete.pop(r.left + r.width/2, r.top + r.height/2, 90);
     toast(falhas ? `Zip pronto! ${falhas} foto(s) falharam, o resto está lá.` : 'Zip pronto! Boa festa.');
   }
-  setZipUI($('#btnZipHero .js-zip-txt').dataset.original, 0);
+  setZipUI($('#btnZip .js-zip-txt').dataset.original, 0);
   document.querySelectorAll('.js-zip').forEach(b => b.classList.remove('ocupado'));
   zipando = false;
 }
@@ -853,9 +698,8 @@ function abrirLightbox(pos){
   lbJanela.classList.add('carregando');
   lbAviso.hidden = true;
   lbImg.classList.remove('pronta');
-  lbImg.alt = f.nomeBonito;
+  lbImg.alt = '';
   lbImg.src = uGrande(f.urlDownload);
-  $('#lbLegenda').textContent = f.nomeBonito;
   $('#lbContador').textContent = `${pos + 1} / ${ordem.length}`;
   [(pos + 1) % ordem.length, (pos - 1 + ordem.length) % ordem.length]
     .forEach(p => { new Image().src = uGrande(fotos[ordem[p]].urlDownload); });
@@ -873,16 +717,12 @@ lbImg.addEventListener('error', () => {
     lbAviso.hidden = false;
   }
 });
- $('#lbFechar').addEventListener('click', fecharLightbox);
- $('#lbFundo').addEventListener('click', fecharLightbox);
- $('#lbAnt').addEventListener('click', () => navegar(-1));
- $('#lbProx').addEventListener('click', () => navegar(1));
- $('#lbBaixar').addEventListener('click', e => baixarFoto(fotos[ordem[posLb]], e.currentTarget));
+$('#lbFechar').addEventListener('click', fecharLightbox);
+$('#lbFundo').addEventListener('click', fecharLightbox);
+$('#lbAnt').addEventListener('click', () => navegar(-1));
+$('#lbProx').addEventListener('click', () => navegar(1));
+$('#lbBaixar').addEventListener('click', e => baixarFoto(fotos[ordem[posLb]], e.currentTarget));
 document.addEventListener('keydown', e => {
-  if ($('#modalGerador').classList.contains('aberto')){
-    if (e.key === 'Escape') fecharGerador();
-    return;
-  }
   if (!lb.classList.contains('aberto')) return;
   if (e.key === 'Escape') fecharLightbox();
   if (e.key === 'ArrowRight') navegar(1);
@@ -895,83 +735,9 @@ lb.addEventListener('touchend', e => {
   if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) navegar(dx < 0 ? 1 : -1);
 }, { passive:true });
 
-/* ============ gerador de fotos.json (roda 100% no seu navegador) ============ */
-const modal = $('#modalGerador'), zonaDrop = $('#zonaDrop'), inpPasta = $('#inpPasta');
-function abrirGerador(){ modal.classList.add('aberto'); document.body.classList.add('sem-rolagem'); }
-function fecharGerador(){ modal.classList.remove('aberto'); document.body.classList.remove('sem-rolagem'); }
- $('#btnRodapeGerador').addEventListener('click', abrirGerador);
- $('#fecharModal').addEventListener('click', fecharGerador);
- $('#modalFundo').addEventListener('click', fecharGerador);
-zonaDrop.addEventListener('click', () => inpPasta.click());
-zonaDrop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); inpPasta.click(); } });
-['dragover','dragenter'].forEach(ev => zonaDrop.addEventListener(ev, e => { e.preventDefault(); zonaDrop.classList.add('sobre'); }));
-['dragleave','drop'].forEach(ev => zonaDrop.addEventListener(ev, e => { e.preventDefault(); zonaDrop.classList.remove('sobre'); }));
-zonaDrop.addEventListener('drop', async e => {
-  const itens = [...(e.dataTransfer?.items || [])];
-  const entradas = itens.map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
-  if (!entradas.length) return;
-  const achados = [];
-  await Promise.all(entradas.map(en => varrerEntry(en, '', achados)));
-  processarSelecao(achados);
-});
-function varrerEntry(entry, prefixo, saida){
-  return new Promise(res => {
-    if (entry.isFile){
-      entry.file(f => { saida.push({ arquivo:f, caminho: prefixo + f.name }); res(); }, () => res());
-    } else if (entry.isDirectory){
-      const leitor = entry.createReader();
-      const lerTudo = () => leitor.readEntries(async lote => {
-        if (!lote.length) return res();
-        await Promise.all(lote.map(e2 => varrerEntry(e2, prefixo + entry.name + '/', saida)));
-        lerTudo();
-      }, () => res());
-      lerTudo();
-    } else res();
-  });
-}
-inpPasta.addEventListener('change', () => {
-  processarSelecao([...inpPasta.files].map(f => ({ arquivo:f, caminho:f.webkitRelativePath || f.name })));
-});
-function processarSelecao(itens){
-  const imagens = itens
-    .filter(i => EhFoto.test(i.caminho) && !i.caminho.split('/').some(s => s.startsWith('.')))
-    .map(i => i.caminho)
-    .sort((a, b) => a.localeCompare(b, 'pt', { numeric:true }));
-  if (!imagens.length){
-    toast('Não achei nenhuma imagem na pasta selecionada.', 'erro');
-    return;
-  }
-  const json = JSON.stringify({ fotos: imagens }, null, 2);
-  $('#contaGerada').textContent = `${imagens.length} foto(s) encontrada(s) ✓`;
-  $('#amostraGerada').textContent = imagens.slice(0, 5).join(' · ') + (imagens.length > 5 ? ' …' : '');
-  $('#txtJson').value = json;
-  $('#listaGerada').hidden = false;
-  toast(`${imagens.length} fotos listadas — agora baixe o arquivo.`);
-}
- $('#btnBaixarJson').addEventListener('click', () => {
-  const blob = new Blob([$('#txtJson').value], { type:'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'fotos.json';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-});
- $('#btnCopiarJson').addEventListener('click', async () => {
-  const txt = $('#txtJson').value;
-  try {
-    await navigator.clipboard.writeText(txt);
-    toast('Copiado! Cole num arquivo salvo como fotos.json.');
-  } catch {
-    $('#txtJson').select();
-    document.execCommand('copy');
-    toast('Copiado!');
-  }
-});
-
 /* ============ ligar os cabos ============ */
 document.querySelectorAll('.js-zip').forEach(b => b.addEventListener('click', baixarTudo));
- $('#busca').addEventListener('input', aplicarBusca);
- $('#mural').addEventListener('click', e => {
+$('#mural').addEventListener('click', e => {
   const b = e.target.closest('.btn-baixar');
   if (b){
     e.stopPropagation();
@@ -984,54 +750,11 @@ document.querySelectorAll('.js-zip').forEach(b => b.addEventListener('click', ba
     if (pos > -1) abrirLightbox(pos);
   }
 });
-const topbar = $('#topbar');
-addEventListener('scroll', () => topbar.classList.toggle('visivel', scrollY > 420), { passive:true });
 
-/* ============ boot: buscar as fotos (fotos.json → GitHub → falha) ============ */
+/* ============ boot ============ */
 async function iniciar(){
   esqueletos();
   $('#estado').innerHTML = '';
-  diag.length = 0;
-
-  /* ---- PLANO C: lista manual no CONFIG ---- */
-  if (CONFIG.listaManual.length){
-    fotos = CONFIG.listaManual.map(objetoFoto);
-    if (!fotos.length){ $('#mural').innerHTML = ''; mostrarEstado('vazio', null); return; }
-    renderFotos();
-    return;
-  }
-
-  /* ---- 1) fotos.json (o caminho que funciona em qualquer host) ---- */
-  try {
-    const r = await fetch('fotos.json', { cache:'no-cache' });
-    if (r.ok){
-      const dados = JSON.parse(await r.text());
-      const arr = Array.isArray(dados) ? dados
-                : (Array.isArray(dados.fotos) ? dados.fotos : null);
-      if (!arr) throw new Error('formato inesperado');
-      if (dados && typeof dados === 'object' && dados.dataDaFesta && !CONFIG.dataDaFesta){
-        $('#pillDataTxt').textContent = dados.dataDaFesta;
-        $('#pillData').hidden = false;
-      }
-      if (!arr.length){
-        registrarDiag('fotos.json', true, 'existe, mas está vazio');
-        $('#mural').innerHTML = '';
-        mostrarEstado('vazio', null);
-        return;
-      }
-      fotos = arr.map(objetoFoto);
-      registrarDiag('fotos.json', true, `${fotos.length} foto(s) carregada(s)`);
-      console.log(`%cÁlbum da Daphnye%c ${fotos.length} foto(s) via fotos.json`,
-        'background:#C2385A;color:#FFF6EC;padding:2px 8px;border-radius:6px;font-weight:bold', '');
-      renderFotos();
-      return;
-    }
-    registrarDiag('fotos.json', false, `o servidor respondeu ${r.status} (arquivo ausente)`);
-  } catch {
-    registrarDiag('fotos.json', false, 'não existe ou tem formato inválido');
-  }
-
-  /* ---- 2) modo automático GitHub ---- */
   try {
     const cfg = resolverCfg();
     const cache = lerCache(cfg);
@@ -1049,45 +772,21 @@ async function iniciar(){
           !a.path.split('/').some(seg => seg.startsWith('.'))
         );
       } catch (e) { if (!(e instanceof ErroPag)) throw e; }
-      if (!blobs.length && !cfg.branch && branch !== 'gh-pages'){
-        try {
-          const arv2 = await gh(`https://api.github.com/repos/${cfg.usuario}/${cfg.repositorio}/git/trees/gh-pages?recursive=1`);
-          const b2 = (arv2.tree || []).filter(a => a.type === 'blob' && EhFoto.test(a.path));
-          if (b2.length){ branch = 'gh-pages'; blobs = b2; }
-        } catch(_){}
-      }
       caminhos = blobs.map(a => a.path);
       gravarCache(cfg, branch, caminhos);
     }
-    if (!caminhos.length){ $('#mural').innerHTML = ''; mostrarEstado('vazio', cfg); return; }
+    $('#mural').innerHTML = '';
+    if (!caminhos.length){ mostrarEstado('vazio'); return; }
     fotos = caminhos.map(path => objetoFoto(rawUrl(cfg.usuario, cfg.repositorio, branch, path)));
-    registrarDiag('API do GitHub', true, `${fotos.length} foto(s) · branch "${branch}"`);
-    console.log(`%cÁlbum da Daphnye%c ${fotos.length} foto(s) via GitHub · branch "${branch}"`,
-      'background:#C2385A;color:#FFF6EC;padding:2px 8px;border-radius:6px;font-weight:bold', '');
     renderFotos();
-    return;
   } catch (err){
-    if (err instanceof ErroPag){
-      registrarDiag('API do GitHub', false, err.message === 'e404' ? 'repositório não encontrado (privado?)' : err.message);
-      $('#mural').innerHTML = '';
-      mostrarEstado(err.message === 'cfg' ? 'cfg' : (err.message === 'falha' ? 'falha' : err.message), null);
-      return;
-    }
-    registrarDiag('API do GitHub', false, 'sem conexão');
+    $('#mural').innerHTML = '';
+    mostrarEstado(err instanceof ErroPag ? err.message : 'rede');
   }
-
-  /* ---- 3) nada deu certo ---- */
-  $('#mural').innerHTML = '';
-  mostrarEstado('falha', null);
 }
 
-/* ============ partida ============ */
 preencherIcones();
 document.querySelectorAll('.js-zip-txt').forEach(el => el.dataset.original = el.textContent);
-if (CONFIG.dataDaFesta.trim()){
-  $('#pillDataTxt').textContent = CONFIG.dataDaFesta.trim();
-  $('#pillData').hidden = false;
-}
 iniciar();
 setTimeout(() => Confete.chuva(70), 400);
 </script>

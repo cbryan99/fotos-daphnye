@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5EFE3">
+<title>Fotos da festa da Daphnye</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='3' width='24' height='27' rx='3' fill='%23FFFDF7'/%3E%3Crect x='7' y='6' width='18' height='16' fill='%23C2385A'/%3E%3Crect x='4' y='3' width='24' height='27' rx='3' fill='none' stroke='%232A211B' stroke-width='2.5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..900;1,9..144,500..900&family=Karla:wght@400;500;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ base ============ */
+  :root{
+    --papel:#F5EFE3; --creme:#FFFDF7; --papel-2:#EDE4D0;
+    --tinta:#2A211B; --tinta-suave:#6B5D50;
+    --framboesa:#C2385A; --framboesa-escura:#A02A47;
+    --ambar:#E3A73C; --salvia:#7FA07C;
+    --hair:rgba(42,33,27,.16);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html{ scroll-behavior:smooth }
+  body{
+    background:var(--papel); color:var(--tinta);
+    font-family:'Karla',sans-serif; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* grão de papel bem sutil por cima de tudo */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection{ background:var(--framboesa); color:var(--creme) }
+  :focus-visible{ outline:2px dashed var(--framboesa); outline-offset:3px; border-radius:4px }
+  body.sem-rolagem{ overflow:hidden }
+  .ic{ flex:none; display:inline-block; vertical-align:-3px }
+  code{ font-family:ui-monospace,monospace; background:var(--papel-2); padding:1px 6px; border-radius:6px; font-size:.9em }
+
+  /* ============ canvas do confete ============ */
+  #confete{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:60 }
+
+  /* ============ topbar (aparece ao rolar) ============ */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:40;
+    display:flex; align-items:center; gap:12px; padding:10px 20px;
+    background:rgba(245,239,227,.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hair);
+    transform:translateY(-110%); transition:transform .35s ease;
+  }
+  .topbar.visivel{ transform:none }
+  .topbar .marca{ display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; margin-right:auto }
+  .topbar .marca::before{ content:""; width:10px; height:10px; border-radius:50%; background:var(--framboesa) }
+  .topbar .conta-mini{ color:var(--tinta-suave); font-size:.9rem }
+  @media (max-width:640px){ .topbar .conta-mini{ display:none } }
+
+  /* ============ botões ============ */
+  .btn{
+    position:relative; overflow:hidden; cursor:pointer; border:none;
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Karla',sans-serif; font-weight:700; font-size:.98rem;
+    border-radius:999px; padding:15px 26px; text-decoration:none;
+    transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .btn-primario{ background:var(--framboesa); color:#FFF6EC; box-shadow:0 8px 22px -12px rgba(194,56,90,.7) }
+  .btn-primario:hover{ background:var(--framboesa-escura); transform:translateY(-2px); box-shadow:0 14px 28px -12px rgba(194,56,90,.75) }
+  .btn-primario:active{ transform:translateY(0) scale(.98) }
+  .btn-primario.ocupado{ pointer-events:none }
+  .btn-fantasma{ background:transparent; color:var(--tinta); border:1.5px solid rgba(42,33,27,.3) }
+  .btn-fantasma:hover{ background:rgba(42,33,27,.06); transform:translateY(-2px) }
+  .btn-fill{ position:absolute; top:0; bottom:0; left:0; width:0%; background:rgba(255,248,238,.28); transition:width .25s ease; pointer-events:none }
+  .btn-rotulo{ position:relative; display:inline-flex; align-items:center; gap:10px }
+  .btn-mini{ padding:10px 18px; font-size:.9rem }
+
+  /* ============ hero ============ */
+  .hero-wrap{ position:relative }
+  .hero{ max-width:900px; margin:0 auto; text-align:center; padding:104px 22px 66px }
+  .pill{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1.5px solid rgba(42,33,27,.28); border-radius:999px; padding:7px 16px;
+    font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  }
+  .pill + .pill{ margin-left:8px }
+  .titulo{
+    font-family:'Fraunces',serif; font-optical-sizing:auto;
+    font-size:clamp(2.7rem, 8vw, 5.3rem); line-height:1.02; letter-spacing:-.02em;
+    font-weight:800; margin-top:26px;
+  }
+  .titulo em{ font-style:italic; font-weight:700 }
+  .nome{ position:relative; display:inline-block; color:var(--framboesa); font-style:italic; white-space:nowrap }
+  .nome svg{ position:absolute; left:-2%; bottom:-.12em; width:104%; height:.22em; overflow:visible }
+  .nome path{
+    stroke:var(--framboesa); stroke-width:6; fill:none; stroke-linecap:round;
+    stroke-dasharray:1; stroke-dashoffset:1; animation:desenhar 1s ease-out .5s forwards;
+  }
+  @keyframes desenhar{ to{ stroke-dashoffset:0 } }
+  .hero-sub{ max-width:560px; margin:22px auto 0; color:var(--tinta-suave); font-size:1.08rem }
+  .hero-acoes{ display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; margin-top:36px }
+
+  /* selo giratório */
+  .selo{ position:absolute; top:96px; right:6vw; width:138px; height:138px; opacity:.92 }
+  .selo .gira{ transform-box:view-box; transform-origin:center; animation:girar 28s linear infinite }
+  @keyframes girar{ to{ transform:rotate(360deg) } }
+  @media (max-width:980px){ .selo{ display:none } }
+
+  /* ============ barra de ferramentas ============ */
+  .ferramentas{
+    max-width:1240px; margin:26px auto 0; padding:16px 22px;
+    border-top:1.5px dashed rgba(42,33,27,.25); border-bottom:1.5px dashed rgba(42,33,27,.25);
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .conta{ color:var(--tinta-suave); font-size:.98rem }
+  .conta strong{ font-family:'Fraunces',serif; font-size:1.55rem; color:var(--framboesa); margin-right:4px; font-weight:800 }
+  .busca{
+    display:flex; align-items:center; gap:8px; border:1.5px solid rgba(42,33,27,.28);
+    border-radius:999px; padding:9px 16px; color:var(--tinta-suave); transition:background .2s;
+  }
+  .busca:focus-within{ background:rgba(42,33,27,.05) }
+  .busca input{
+    border:none; outline:none; background:transparent; color:var(--tinta);
+    font-family:'Karla',sans-serif; font-size:.95rem; width:170px; transition:width .25s ease;
+  }
+  .busca input:focus{ width:230px }
+  .busca input::placeholder{ color:var(--tinta-suave) }
+
+  /* ============ mural de polaroids ============ */
+  .mural{
+    max-width:1240px; margin:0 auto; padding:52px 22px 30px;
+    display:flex; flex-wrap:wrap; gap:44px 30px; justify-content:center; align-items:flex-start;
+  }
+  .polaroid{
+    width:var(--w,240px); background:var(--creme); padding:12px 12px 12px;
+    box-shadow:0 2px 6px rgba(42,33,27,.12), 0 20px 36px -18px rgba(42,33,27,.35);
+    transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px));
+    transition:transform .35s cubic-bezier(.2,.8,.3,1.25), box-shadow .35s ease;
+    position:relative; cursor:pointer;
+  }
+  .polaroid:hover{
+    transform:rotate(calc(var(--rot,0deg)*.25)) translateY(calc(var(--dy,0px) - 10px)) scale(1.045);
+    box-shadow:0 4px 10px rgba(42,33,27,.14), 0 34px 50px -18px rgba(42,33,27,.45);
+    z-index:2;
+  }
+  /* fita washi */
+  .polaroid::before{
+    content:""; position:absolute; top:-13px; left:50%; width:96px; height:27px; z-index:3;
+    transform:translateX(-50%) rotate(var(--fita-rot,-3deg));
+    background-color:var(--fita,rgba(227,167,60,.8));
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.3) 0 2px, transparent 2px 7px);
+    clip-path:polygon(3% 0,97% 0,100% 20%,97% 40%,100% 60%,97% 80%,100% 100%,3% 100%,0 80%,3% 60%,0 40%,3% 20%);
+    box-shadow:0 2px 4px rgba(42,33,27,.15);
+  }
+  .janela{ position:relative; width:100%; aspect-ratio:1; overflow:hidden; background:var(--papel-2) }
+  .janela img{ width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.01); transition:transform .6s ease }
+  .polaroid:hover .janela img{ transform:scale(1.07) }
+  .legenda{
+    font-family:'Caveat',cursive; font-size:1.25rem; color:#5A4B40; text-align:center;
+    padding:9px 4px 2px; min-height:1.9em; line-height:1.2;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .btn-baixar{
+    position:absolute; right:9px; bottom:9px; width:40px; height:40px; border-radius:50%;
+    border:none; background:var(--tinta); color:var(--papel); display:grid; place-items:center;
+    cursor:pointer; opacity:0; transform:translateY(6px); transition:.25s ease;
+    box-shadow:0 6px 14px rgba(0,0,0,.3);
+  }
+  .polaroid:hover .btn-baixar, .btn-baixar:focus-visible{ opacity:1; transform:none }
+  .btn-baixar:hover{ background:var(--framboesa) }
+  @media (hover:none){ .btn-baixar{ opacity:.94; transform:none } }
+  @media (max-width:600px){
+    .polaroid{ width:min(var(--w,240px),42vw) }
+    .mural{ gap:34px 18px }
+    .legenda{ font-size:1.05rem }
+  }
+  .girar{ animation:spin 1s linear infinite }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+
+  /* esqueleto de carregamento */
+  .esqueleto{ pointer-events:none }
+  .esqueleto .janela{
+    background:linear-gradient(100deg, var(--papel-2) 40%, #F7F1E2 50%, var(--papel-2) 60%);
+    background-size:220% 100%; animation:brilho 1.4s ease-in-out infinite;
+  }
+  @keyframes brilho{ from{ background-position:120% 0 } to{ background-position:-120% 0 } }
+  .leg-bar{ width:68%; height:12px; border-radius:6px; background:var(--papel-2); margin:12px auto 4px }
+
+  /* ============ estados (erro / vazio / busca) ============ */
+  .card-estado{
+    max-width:580px; margin:64px auto 90px; background:var(--creme);
+    border:1.5px solid var(--hair); border-radius:18px; padding:30px 32px;
+    box-shadow:0 2px 6px rgba(42,33,27,.08), 0 24px 44px -24px rgba(42,33,27,.3);
+  }
+  .card-estado h2{ font-family:'Fraunces',serif; font-size:1.5rem; margin:14px 0 10px }
+  .card-estado .cabeca{ display:flex; align-items:center; gap:12px }
+  .card-estado .cabeca .ic{ color:var(--ambar) }
+  .card-estado ul{ list-style:none; margin-top:12px }
+  .card-estado li{ position:relative; padding-left:1.3em; color:var(--tinta-suave); margin-top:8px }
+  .card-estado li::before{ content:"—"; position:absolute; left:0; color:var(--framboesa); font-weight:700 }
+  .card-estado .btn{ margin-top:22px }
+  .sem-resultado{
+    display:none; width:100%; text-align:center; padding:30px 0 60px;
+    font-family:'Caveat',cursive; font-size:1.7rem; color:var(--tinta-suave);
+  }
+  .sem-resultado.visivel{ display:block }
+
+  /* ============ lightbox ============ */
+  .lightbox{
+    position:fixed; inset:0; z-index:80; display:flex; align-items:center; justify-content:center;
+    visibility:hidden; opacity:0; transition:opacity .3s ease, visibility .3s;
+  }
+  .lightbox.aberto{ visibility:visible; opacity:1 }
+  .lb-fundo{ position:absolute; inset:0; background:rgba(26,19,14,.86); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px) }
+  .lb-corpo{ position:relative; display:flex; flex-direction:column; align-items:center; gap:18px; padding:20px; transform:scale(.94); transition:transform .3s cubic-bezier(.2,.8,.3,1.2) }
+  .lightbox.aberto .lb-corpo{ transform:scale(1) }
+  .lb-polaroid{
+    background:var(--creme); padding:14px 14px 6px; max-width:min(90vw,920px);
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6); transform:rotate(-.5deg);
+  }
+  .lb-janela{ position:relative; display:flex; justify-content:center; align-items:center; min-width:min(80vw,480px); min-height:min(50vh,340px); aspect-ratio:auto }
+  .lb-janela img{ max-width:min(86vw,880px); max-height:64vh; width:auto; height:auto; opacity:0; transition:opacity .35s ease }
+  .lb-janela img.pronta{ opacity:1 }
+  .lb-spin{
+    position:absolute; width:38px; height:38px; border-radius:50%;
+    border:3px solid rgba(42,33,27,.15); border-top-color:var(--framboesa);
+    animation:spin .9s linear infinite; display:none;
+  }
+  .lb-janela.carregando .lb-spin{ display:block }
+  .lb-polaroid .legenda{ font-size:1.5rem; padding-bottom:6px }
+  .lb-contador{
+    position:absolute; top:22px; left:50%; transform:translateX(-50%);
+    color:rgba(255,246,236,.85); font-weight:700; font-size:.92rem; letter-spacing:.08em;
+  }
+  .lb-fechar,.lb-seta{
+    position:absolute; z-index:2; width:46px; height:46px; border-radius:50%; border:none; cursor:pointer;
+    background:rgba(255,253,247,.12); color:var(--creme); display:grid; place-items:center;
+    transition:background .2s, transform .2s;
+  }
+  .lb-fechar:hover,.lb-seta:hover{ background:rgba(255,253,247,.28); transform:scale(1.08) }
+  .lb-fechar{ top:18px; right:18px }
+  .lb-seta{ top:50%; margin-top:-23px }
+  .lb-seta.ant{ left:18px } .lb-seta.prox{ right:18px }
+  @media (max-width:640px){
+    .lb-corpo{ padding-bottom:96px }
+    .lb-seta{ top:auto; bottom:22px; margin-top:0 }
+    .lb-seta.ant{ left:22px } .lb-seta.prox{ right:22px }
+    .lb-janela img{ max-height:52vh }
+  }
+
+  /* ============ toasts ============ */
+  .toasts{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%); z-index:100; display:flex; flex-direction:column; gap:10px; align-items:center; pointer-events:none }
+  .toast{
+    display:flex; align-items:center; gap:10px; background:var(--tinta); color:var(--papel);
+    padding:13px 20px; border-radius:12px; font-size:.95rem; font-weight:500;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,.5); animation:entrar .3s ease;
+    max-width:min(92vw,480px);
+  }
+  .toast.saindo{ opacity:0; transform:translateY(8px); transition:.3s ease }
+  .toast .ic{ color:var(--salvia) }
+  .toast.erro .ic{ color:var(--ambar) }
+  @keyframes entrar{ from{ opacity:0; transform:translateY(14px) } }
+
+  /* ============ rodapé ============ */
+  footer{ text-align:center; padding:60px 22px 70px; color:var(--tinta-suave) }
+  footer .coracao{ color:var(--framboesa); vertical-align:-3px }
+  footer p + p{ font-size:.85rem; margin-top:6px; opacity:.75 }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{ animation:none!important; transition:none!important }
+    html{ scroll-behavior:auto }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confete" aria-hidden="true"></canvas>
+
+<!-- topbar que surge ao rolar -->
+<nav class="topbar" id="topbar" aria-label="Barra de ações">
+  <span class="marca">Fotos da Daphnye</span>
+  <span class="conta-mini" id="contaMini"></span>
+  <button class="btn btn-primario btn-mini js-zip" type="button">
+    <span class="btn-fill js-zip-fill" aria-hidden="true"></span>
+    <span class="btn-rotulo"><i data-ic="pacote" data-tam="16"></i><span class="js-zip-txt">Baixar tudo (.zip)</span></span>
+  </button>
+</nav>
+
+<main>
+  <!-- ============ hero ============ -->
+  <header class="hero-wrap">
+    <!-- selo giratório -->
+    <svg class="selo" viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="57" fill="none" stroke="#2A211B" stroke-width="1.5"/>
+      <circle cx="60" cy="60" r="30" fill="none" stroke="#2A211B" stroke-width="1"/>
+      <g class="gira">
+        <defs><path id="anel" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+        <text font-family="Karla, sans-serif" font-size="10.6" font-weight="700" letter-spacing="1.6" fill="#2A211B" opacity=".85">
+          <textPath href="#anel">FESTA DA DAPHNYE • ÁLBUM DA FAMÍLIA •</textPath>
+        </text>
+      </g>
+      <path d="M60 76c-7-5.2-15.5-11.6-15.5-19.4 0-5 4-8.6 8.4-8.6 3 0 5.6 1.7 7.1 4.1 1.5-2.4 4.1-4.1 7.1-4.1 4.4 0 8.4 3.6 8.4 8.6C75.5 64.4 67 70.8 60 76z" fill="#C2385A"/>
+    </svg>
+
+    <div class="hero">
+      <span class="pill"><i data-ic="camera" data-tam="15"></i>Álbum da festa</span>
+      <span class="pill" id="pillData" hidden><i data-ic="calendario" data-tam="15"></i><span id="pillDataTxt"></span></span>
+
+      <h1 class="titulo">As fotos do<br><em>aniversário</em> da
+        <span class="nome">Daphnye<svg viewBox="0 0 220 22" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 14 C 50 5, 92 20, 132 12 S 202 7, 216 13"/></svg></span>
+      </h1>
+
+      <p class="hero-sub">Clique numa foto para ver de pertinho e baixar as suas favoritas — ou leve o álbum inteiro num único arquivo zip.</p>
+
+      <div class="hero-acoes">
+        <button class="btn btn-primario js-zip" id="btnZipHero" type="button">
+          <span class="btn-fill js-zip-fill" aria-hidden="true"></span>
+          <span class="btn-rotulo"><i data-ic="pacote" data-tam="18"></i><span class="js-zip-txt">Baixar todas as fotos (.zip)</span></span>
+        </button>
+        <a class="btn btn-fantasma" href="#mural">Ver as fotos <i data-ic="setaBaixo" data-tam="17"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ferramentas ============ -->
+  <section class="ferramentas">
+    <p class="conta" id="conta"></p>
+    <label class="busca">
+      <i data-ic="lupa" data-tam="17"></i>
+      <input type="search" id="busca" placeholder="Procurar foto…" aria-label="Procurar foto pelo nome">
+    </label>
+  </section>
+
+  <!-- ============ mural ============ -->
+  <section class="mural" id="mural" aria-label="Galeria de fotos"></section>
+  <p class="sem-resultado" id="semResultado"></p>
+  <div id="estado" aria-live="polite"></div>
+
+  <footer>
+    <p>Feito com <svg class="coracao ic" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-8-5.5-10.5-10C-.4 7 2 3.5 5.7 3.5 8.2 3.5 10.3 5 12 7c1.7-2 3.8-3.5 6.3-3.5C22 3.5 24.4 7 22.5 11 20 15.5 12 21 12 21z"/></svg> carinho para a família da Daphnye — aproveitem as memórias.</p>
+    <p>As fotos ficam guardadas no GitHub e o zip é montado aqui no seu navegador.</p>
+  </footer>
+</main>
+
+<!-- ============ lightbox ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <div class="lb-fundo" id="lbFundo"></div>
+  <span class="lb-contador" id="lbContador"></span>
+  <button class="lb-fechar" id="lbFechar" aria-label="Fechar"><i data-ic="x" data-tam="20"></i></button>
+  <button class="lb-seta ant" id="lbAnt" aria-label="Foto anterior"><i data-ic="esq" data-tam="22"></i></button>
+  <button class="lb-seta prox" id="lbProx" aria-label="Próxima foto"><i data-ic="dir" data-tam="22"></i></button>
+  <div class="lb-corpo">
+    <figure class="lb-polaroid">
+      <div class="janela lb-janela" id="lbJanela">
+        <span class="lb-spin" aria-hidden="true"></span>
+        <img id="lbImg" alt="">
+      </div>
+      <figcaption class="legenda" id="lbLegenda"></figcaption>
+    </figure>
+    <button class="btn btn-primario" id="lbBaixar" type="button"><i data-ic="download" data-tam="18"></i>Baixar esta foto</button>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+/* ================================================================
+   ⚙️  CONFIGURAÇÃO — é aqui que você mexe, se precisar!
+   ----------------------------------------------------------------
+   Regra geral: NO GitHub Pages, com a pasta de fotos chamada
+   "fotos", não precisa preencher NADA — o site se descobre sozinho.
+   Só preencha se for testar fora do GitHub Pages.
+================================================================ */
+const CONFIG = {
+  usuario:  "",      // ex.: "maria-silva"   (vazio = descobre sozinho no GitHub Pages)
+  repositorio: "",   // ex.: "fotos-daphnye" (vazio = descobre sozinho no GitHub Pages)
+  pasta: "fotos",    // nome da pasta onde estão as fotos, dentro do repositório
+  branch: "",        // vazio = usa o branch principal do repositório
+  dataDaFesta: "",   // opcional — ex.: "14 de março de 2025"
+  miniaturasRapidas: true  // acelera o carregamento; se algo estranho, mude para false
+};
+
+/* ============ utilidades ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ICONES = {
+  download:'<path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/>',
+  pacote:'<path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/>',
+  lupa:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  esq:'<path d="m14 6-6 6 6 6"/>',
+  dir:'<path d="m10 6 6 6-6 6"/>',
+  check:'<path d="m5 13 4 4 10-10"/>',
+  alerta:'<path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4"/><path d="M12 17.2v.1"/>',
+  camera:'<path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/>',
+  calendario:'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+  setaBaixo:'<path d="M12 4v14"/><path d="m6 12 6 6 6-6"/>',
+  loader:'<path d="M21 12a9 9 0 1 1-6.2-8.56"/>'
+};
+function icone(nome, tam = 18){
+  return `<svg class="ic" width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES[nome] || ''}</svg>`;
+}
+function preencherIcones(raiz = document){
+  raiz.querySelectorAll('[data-ic]').forEach(el => {
+    el.outerHTML = icone(el.dataset.ic, +(el.dataset.tam || 18));
+  });
+}
+class ErroPag extends Error {}
+
+/* ============ toasts ============ */
+function toast(msg, tipo = 'ok'){
+  const el = document.createElement('div');
+  el.className = 'toast' + (tipo === 'erro' ? ' erro' : '');
+  el.innerHTML = icone(tipo === 'erro' ? 'alerta' : 'check', 17) + `<span>${esc(msg)}</span>`;
+  $('#toasts').appendChild(el);
+  setTimeout(() => { el.classList.add('saindo'); setTimeout(() => el.remove(), 350); }, 3600);
+}
+
+/* ============ confete ============ */
+const Confete = (() => {
+  const cv = $('#confete'), ctx = cv.getContext('2d');
+  const CORES = ['#C2385A', '#E3A73C', '#7FA07C', '#D9C29A', '#2A211B'];
+  const FORMAS = ['ret', 'ret', 'circ', 'fita'];
+  let P = [], raf = null;
+  function medir(){
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  addEventListener('resize', medir); medir();
+  function nova(o){
+    P.push(Object.assign({
+      x:0, y:0, vx:0, vy:0, g:.14, drag:.985, decai:0, vida:1,
+      rot:Math.random()*6.28, vr:(Math.random()-.5)*.3,
+      flip:Math.random()*6.28, vflip:.1+Math.random()*.2,
+      forma:FORMAS[(Math.random()*FORMAS.length)|0],
+      w:7+Math.random()*6, h:5+Math.random()*4,
+      cor:CORES[(Math.random()*CORES.length)|0], sway:0, fase:Math.random()*6.28
+    }, o));
+  }
+  function loop(){
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = P.length - 1; i >= 0; i--){
+      const p = P[i];
+      p.vy += p.g; p.vx *= p.drag; p.vy *= p.drag;
+      p.fase += .05;
+      p.x += p.vx + Math.sin(p.fase) * p.sway;
+      p.y += p.vy; p.rot += p.vr; p.flip += p.vflip;
+      if (p.decai) p.vida -= p.decai;
+      const a = p.decai
+        ? Math.max(0, Math.min(1, p.vida))
+        : Math.max(0, Math.min(1, 1.2 - p.y / (innerHeight * .9)));
+      if (a <= 0 || p.y > innerHeight + 50){ P.splice(i, 1); continue; }
+      ctx.save();
+      ctx.globalAlpha = a; ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.cor;
+      if (p.forma === 'circ'){ ctx.beginPath(); ctx.arc(0, 0, p.w/2, 0, 6.283); ctx.fill(); }
+      else {
+        const sy = p.forma === 'fita' ? 1 : Math.max(.15, Math.abs(Math.cos(p.flip)));
+        ctx.scale(1, sy); ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      }
+      ctx.restore();
+    }
+    if (!P.length){ raf = null; ctx.clearRect(0, 0, innerWidth, innerHeight); return; }
+    raf = requestAnimationFrame(loop);
+  }
+  function iniciar(){ if (!raf) raf = requestAnimationFrame(loop); }
+  function chuva(n){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (let i = 0; i < n; i++) nova({
+      x:Math.random()*innerWidth, y:-20-Math.random()*innerHeight*.5,
+      vy:.7+Math.random()*1.6, vx:(Math.random()-.5)*1.2, g:.015, drag:.999,
+      sway:.4+Math.random()*.8
+    });
+    iniciar();
+  }
+  function pop(x, y, n){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (let i = 0; i < n; i++){
+      const a = Math.random()*6.283, v = 2.5+Math.random()*6;
+      nova({ x, y, vx:Math.cos(a)*v, vy:Math.sin(a)*v-2.5, g:.16, drag:.975, decai:.012+Math.random()*.008 });
+    }
+    iniciar();
+  }
+  return { chuva, pop };
+})();
+
+/* ============ descobrir usuário/repositório ============ */
+function resolverCfg(){
+  let usuario = (CONFIG.usuario || '').trim(), repo = (CONFIG.repositorio || '').trim();
+  if (!usuario || !repo){
+    const host = location.hostname;
+    if (host.endsWith('.github.io')){
+      const dono = host.split('.')[0];
+      const seg = location.pathname.split('/').filter(Boolean);
+      usuario = usuario || dono;
+      repo = repo || (seg.length ? seg[0] : dono);
+    } else if (!usuario || !repo){
+      throw new ErroPag('cfg');
+    }
+  }
+  return { usuario, repo, pasta:(CONFIG.pasta || 'fotos').trim().replace(/^\/|\/$/g,''), branch:(CONFIG.branch || '').trim() };
+}
+
+/* ============ estado da página (erros / vazio) ============ */
+function mostrarEstado(chave){
+  const est = $('#estado');
+  const blocos = {
+    cfg: { titulo:'Falta um detalhe na configuração', itens:[
+      'Abra o <code>index.html</code> e preencha <code>usuario</code> e <code>repositorio</code> no bloco CONFIG, no início do script.',
+      'No GitHub Pages, com a pasta de fotos no lugar, funciona até sem preencher nada.' ]},
+    e404: { titulo:'Não encontrei a pasta de fotos', itens:[
+      'Confira se existe uma pasta chamada <code>fotos</code> na raiz do repositório, com as fotos dentro dela.',
+      'Veja se o nome do usuário e do repositório estão certos no bloco CONFIG.'] },
+    e403: { titulo:'O GitHub pediu uma pausa', itens:[
+      'O GitHub limita as consultas por hora a cada visitante — espere alguns minutinhos e tente de novo.'] },
+    rede: { titulo:'Não consegui falar com o GitHub', itens:[
+      'Confira a sua conexão com a internet e tente de novo.'] },
+    vazio: { titulo:'A pasta ainda está vazia', itens:[
+      'Coloque as fotos dentro da pasta <code>fotos</code> no repositório (pela página do GitHub, botão “Add file → Upload files”) e recarregue.'] }
+  };
+  const b = blocos[chave] || blocos.rede;
+  est.innerHTML = `<div class="card-estado">
+      <div class="cabeca">${icone('alerta', 26)}<h2>${b.titulo}</h2></div>
+      <ul>${b.itens.map(i => `<li>${i}</li>`).join('')}</ul>
+      <button class="btn btn-fantasma" id="btnTentar">${icone('loader', 17)} Tentar de novo</button>
+    </div>`;
+  preencherIcones(est);
+  $('#btnTentar').addEventListener('click', iniciar);
+}
+
+/* ============ carregar e desenhar as fotos ============ */
+let fotos = [], ordem = [];
+const ROT  = [-2.6, 1.9, -1.3, 2.4, -1.8, 1.4, -2.2, 2.8];
+const DY   = [0, 14, 5, 18, 9, 2, 15, 7];
+const LARG = [236, 252, 224, 244, 232, 256, 228, 240];
+const FITA_ROT = [-4, 3, 5, -3, 4, -5, 2, -2];
+const FITAS = ['rgba(194,56,90,.72)', 'rgba(227,167,60,.8)', 'rgba(127,160,124,.78)'];
+const EhFoto = /\.(jpe?g|png|gif|webp|bmp|avif)$/i;
+
+const nomeBonito = n => n.replace(/\.[^.]+$/, '').replace(/[_\-]+/g, ' ').trim() || n;
+const uThumb  = u => CONFIG.miniaturasRapidas ? `https://images.weserv.nl/?url=${encodeURIComponent(u)}&w=640&output=webp&q=82` : u;
+const uGrande = u => CONFIG.miniaturasRapidas ? `https://images.weserv.nl/?url=${encodeURIComponent(u)}&w=1600&output=webp&q=86` : u;
+
+function esqueletos(n = 6){
+  const mural = $('#mural'); mural.innerHTML = '';
+  for (let i = 0; i < n; i++){
+    const d = document.createElement('div');
+    d.className = 'polaroid esqueleto';
+    d.style.cssText = `--rot:${ROT[i%8]}deg; --dy:${DY[i%8]}px; --w:${LARG[i%8]}px; --fita-rot:${FITA_ROT[i%8]}deg; --fita:${FITAS[i%3]}`;
+    d.innerHTML = `<div class="janela"></div><div class="leg-bar"></div>`;
+    mural.appendChild(d);
+  }
+}
+
+function cartao(foto, i){
+  const el = document.createElement('figure');
+  el.className = 'polaroid'; el.dataset.idx = i;
+  el.style.cssText = `--rot:${ROT[i%8]}deg; --dy:${DY[i%8]}px; --w:${LARG[i%8]}px; --fita-rot:${FITA_ROT[i%8]}deg; --fita:${FITAS[i%3]}`;
+  el.innerHTML = `
+    <div class="janela">
+      <img src="${esc(foto.thumb)}" alt="${esc(foto.nomeBonito)}" loading="lazy" decoding="async">
+      <button class="btn-baixar" type="button" aria-label="Baixar ${esc(foto.nome)}" title="Baixar esta foto">${icone('download', 18)}</button>
+    </div>
+    <figcaption class="legenda">${esc(foto.nomeBonito)}</figcaption>`;
+  const img = el.querySelector('img');
+  img.onerror = () => { if (!img.src.includes(foto.urlDownload)) img.src = foto.urlDownload; };
+  return el;
+}
+
+function atualizarConta(visiveis){
+  const c = $('#conta');
+  if (visiveis < fotos.length){
+    c.innerHTML = `<strong>${visiveis}</strong> de ${fotos.length} fotos aparecendo`;
+  } else {
+    c.innerHTML = `<strong>0</strong> fotos esperando por você · passe o mouse numa foto para baixá-la`;
+    const strong = c.querySelector('strong');
+    // contador animado
+    const t0 = performance.now(), dur = 900, alvo = fotos.length;
+    (function passo(t){
+      const p = Math.min(1, (t - t0) / dur);
+      strong.textContent = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(passo);
+    })(t0);
+  }
+  $('#contaMini').textContent = fotos.length ? `${fotos.length} fotos` : '';
+}
+
+function aplicarBusca(){
+  const q = $('#busca').value.trim().toLowerCase();
+  ordem = [];
+  let visiveis = 0;
+  document.querySelectorAll('#mural .polaroid:not(.esqueleto)').forEach(el => {
+    const i = +el.dataset.idx, f = fotos[i];
+    const bate = !q || f.nome.toLowerCase().includes(q) || f.nomeBonito.toLowerCase().includes(q);
+    el.style.display = bate ? '' : 'none';
+    if (bate){ ordem.push(i); visiveis++; }
+  });
+  atualizarConta(visiveis);
+  const sr = $('#semResultado');
+  if (q && visiveis === 0){ sr.textContent = `Nenhuma foto com “${q}” — tenta outro nome?`; sr.classList.add('visivel'); }
+  else sr.classList.remove('visivel');
+}
+
+/* ============ download individual ============ */
+async function baixarFoto(foto, btn){
+  if (btn){
+    btn.dataset.antes = btn.innerHTML;
+    btn.innerHTML = icone('loader', 18);
+    btn.querySelector('svg')?.classList.add('girar');
+    btn.style.pointerEvents = 'none';
+  }
+  try {
+    const r = await fetch(foto.urlDownload);
+    if (!r.ok) throw 0;
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = foto.nome;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  } catch {
+    toast('Não consegui baixar esta foto — tenta de novo.', 'erro');
+  }
+  if (btn){
+    btn.innerHTML = btn.dataset.antes;
+    btn.style.pointerEvents = '';
+  }
+}
+
+/* ============ download de tudo (.zip, montado no navegador) ============ */
+let zipando = false;
+function setZipUI(texto, pct){
+  document.querySelectorAll('.js-zip-txt').forEach(el => { el.textContent = texto; });
+  document.querySelectorAll('.js-zip-fill').forEach(el => { el.style.width = (pct || 0) + '%'; });
+}
+async function baixarTudo(){
+  if (zipando || !fotos.length) return;
+  if (typeof JSZip === 'undefined'){ toast('O compactador não carregou — confira a internet e recarregue.', 'erro'); return; }
+  zipando = true;
+  document.querySelectorAll('.js-zip').forEach(b => b.classList.add('ocupado'));
+
+  const zip = new JSZip();
+  const pasta = zip.folder('fotos-daphnye');
+  const usados = new Map();
+  let feitas = 0, falhas = 0;
+  const total = fotos.length;
+
+  // 3 downloads em paralelo para ir mais rápido; fotos em JPEG já vêm comprimidas,
+  // então guardo no zip sem recomprimir (STORE) — compacta em segundos, não minutos.
+  let ponteiro = 0;
+  async function trabalhador(){
+    while (ponteiro < total){
+      const f = fotos[ponteiro++];
+      try {
+        const r = await fetch(f.urlDownload);
+        if (!r.ok) throw 0;
+        const blob = await r.blob();
+        const n = usados.get(f.nome) || 0; usados.set(f.nome, n + 1);
+        const nome = n ? f.nome.replace(/(\.[^.]+)$/, ` (${n + 1})$1`) : f.nome;
+        pasta.file(nome, blob);
+      } catch { falhas++; }
+      feitas++;
+      setZipUI(`Baixando ${feitas} de ${total}…`, (feitas / total) * 92);
+    }
+  }
+  await Promise.all([trabalhador(), trabalhador(), trabalhador()]);
+
+  if (!feitas){
+    toast('Nenhuma foto conseguiu ser baixada — tenta de novo.', 'erro');
+  } else {
+    setZipUI('Compactando…', 94);
+    const blob = await zip.generateAsync({ type:'blob', compression:'STORE' },
+      (_, meta) => setZipUI('Compactando…', 94 + meta.percent * 0.06));
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'fotos-aniversario-da-daphnye.zip';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 8000);
+    const r = $('#btnZipHero').getBoundingClientRect();
+    Confete.pop(r.left + r.width/2, r.top + r.height/2, 90);
+    toast(falhas ? `Zip pronto! ${falhas} foto(s) falharam, o resto está lá.` : 'Zip pronto! Boa festa.');
+  }
+  setZipUI($('#btnZipHero .js-zip-txt').dataset.original, 0);
+  document.querySelectorAll('.js-zip').forEach(b => b.classList.remove('ocupado'));
+  zipando = false;
+}
+
+/* ============ lightbox ============ */
+const lb = $('#lightbox'), lbImg = $('#lbImg'), lbJanela = $('#lbJanela');
+let posLb = 0;
+function abrirLightbox(pos){
+  if (!ordem.length) return;
+  posLb = pos;
+  const f = fotos[ordem[pos]];
+  document.body.classList.add('sem-rolagem');
+  lb.classList.add('aberto');
+  lbJanela.classList.add('carregando');
+  lbImg.classList.remove('pronta');
+  lbImg.alt = f.nomeBonito;
+  lbImg.src = uGrande(f.urlDownload);
+  lbImg.onerror = () => { lbImg.onerror = null; lbImg.src = f.urlDownload; };
+  $('#lbLegenda').textContent = f.nomeBonito;
+  $('#lbContador').textContent = `${pos + 1} / ${ordem.length}`;
+  // pré-carrega as vizinhas para a navegação ser instantânea
+  [(pos + 1) % ordem.length, (pos - 1 + ordem.length) % ordem.length]
+    .forEach(p => { new Image().src = uGrande(fotos[ordem[p]].urlDownload); });
+}
+function fecharLightbox(){ lb.classList.remove('aberto'); document.body.classList.remove('sem-rolagem'); }
+function navegar(d){ abrirLightbox((posLb + d + ordem.length) % ordem.length); }
+lbImg.addEventListener('load', () => { lbImg.classList.add('pronta'); lbJanela.classList.remove('carregando'); });
+ $('#lbFechar').addEventListener('click', fecharLightbox);
+ $('#lbFundo').addEventListener('click', fecharLightbox);
+ $('#lbAnt').addEventListener('click', () => navegar(-1));
+ $('#lbProx').addEventListener('click', () => navegar(1));
+ $('#lbBaixar').addEventListener('click', e => baixarFoto(fotos[ordem[posLb]], e.currentTarget));
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('aberto')) return;
+  if (e.key === 'Escape') fecharLightbox();
+  if (e.key === 'ArrowRight') navegar(1);
+  if (e.key === 'ArrowLeft') navegar(-1);
+});
+let tX = 0, tY = 0;
+lb.addEventListener('touchstart', e => { tX = e.touches[0].clientX; tY = e.touches[0].clientY; }, { passive:true });
+lb.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tX, dy = e.changedTouches[0].clientY - tY;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) navegar(dx < 0 ? 1 : -1);
+}, { passive:true });
+
+/* ============ ligar os cabos ============ */
+document.querySelectorAll('.js-zip').forEach(b => b.addEventListener('click', baixarTudo));
+ $('#busca').addEventListener('input', aplicarBusca);
+ $('#mural').addEventListener('click', e => {
+  const b = e.target.closest('.btn-baixar');
+  if (b){
+    e.stopPropagation();
+    baixarFoto(fotos[+b.closest('.polaroid').dataset.idx], b);
+    return;
+  }
+  const p = e.target.closest('.polaroid');
+  if (p && p.dataset.idx !== undefined){
+    const pos = ordem.indexOf(+p.dataset.idx);
+    if (pos > -1) abrirLightbox(pos);
+  }
+});
+const topbar = $('#topbar');
+addEventListener('scroll', () => topbar.classList.toggle('visivel', scrollY > 420), { passive:true });
+
+/* ============ boot: buscar as fotos na pasta do repositório ============ */
+async function iniciar(){
+  esqueletos();
+  $('#estado').innerHTML = '';
+  try {
+    const cfg = resolverCfg();
+    const api = `https://api.github.com/repos/${cfg.usuario}/${cfg.repositorio}/contents/${encodeURI(cfg.pasta)}${cfg.branch ? `?ref=${encodeURIComponent(cfg.branch)}` : ''}`;
+    const r = await fetch(api, { headers:{ 'Accept':'application/vnd.github+json' } });
+    if (r.status === 404) throw new ErroPag('e404');
+    if (r.status === 403) throw new ErroPag('e403');
+    if (!r.ok) throw new ErroPag('rede');
+    const dados = await r.json();
+    if (!Array.isArray(dados)) throw new ErroPag('rede');
+
+    fotos = dados.filter(a => a.type === 'file' && EhFoto.test(a.name)).map(a => ({
+      nome: a.name,
+      nomeBonito: nomeBonito(a.name),
+      urlDownload: a.download_url,
+      thumb: uThumb(a.download_url)
+    }));
+
+    const mural = $('#mural');
+    mural.innerHTML = '';
+    $('#estado').innerHTML = '';
+
+    if (!fotos.length){ mostrarEstado('vazio'); atualizarConta(0); return; }
+
+    fotos.forEach((f, i) => mural.appendChild(cartao(f, i)));
+    ordem = fotos.map((_, i) => i);
+    atualizarConta(fotos.length);
+    Confete.chuva(90);
+  } catch (err){
+    $('#mural').innerHTML = '';
+    mostrarEstado(err instanceof ErroPag ? err.message : 'rede');
+  }
+}
+
+/* ============ partida ============ */
+preencherIcones();
+document.querySelectorAll('.js-zip-txt').forEach(el => el.dataset.original = el.textContent);
+if (CONFIG.dataDaFesta.trim()){
+  $('#pillDataTxt').textContent = CONFIG.dataDaFesta.trim();
+  $('#pillData').hidden = false;
+}
+iniciar();
+setTimeout(() => Confete.chuva(70), 400);
+</script>
+</body>
+</html>

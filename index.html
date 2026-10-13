@@ -755,6 +755,20 @@ $('#mural').addEventListener('click', e => {
 async function iniciar(){
   esqueletos();
   $('#estado').innerHTML = '';
+
+  try {
+    const r = await fetch('fotos.json', { cache:'no-cache' });
+    if (r.ok){
+      const dados = JSON.parse(await r.text());
+      const arr = Array.isArray(dados) ? dados : (Array.isArray(dados.fotos) ? dados.fotos : null);
+      if (arr && arr.length){
+        fotos = arr.map(objetoFoto);
+        renderFotos();
+        return;
+      }
+    }
+  } catch(_){}
+
   try {
     const cfg = resolverCfg();
     const cache = lerCache(cfg);

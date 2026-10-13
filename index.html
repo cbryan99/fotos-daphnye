@@ -178,18 +178,23 @@
   .leg-bar{ width:68%; height:12px; border-radius:6px; background:var(--papel-2); margin:12px auto 4px }
 
   .card-estado{
-    max-width:600px; margin:64px auto 90px; background:var(--creme);
+    max-width:640px; margin:64px auto 90px; background:var(--creme);
     border:1.5px solid var(--hair); border-radius:18px; padding:30px 32px;
     box-shadow:0 2px 6px rgba(42,33,27,.08), 0 24px 44px -24px rgba(42,33,27,.3);
   }
   .card-estado h2{ font-family:'Fraunces',serif; font-size:1.5rem; margin:0 0 4px }
   .card-estado .cabeca{ display:flex; align-items:center; gap:12px }
   .card-estado .cabeca .ic{ color:var(--ambar) }
-  .card-estado ul{ list-style:none; margin-top:14px }
-  .card-estado li{ position:relative; padding-left:1.3em; color:var(--tinta-suave); margin-top:8px }
-  .card-estado li::before{ content:"—"; position:absolute; left:0; color:var(--framboesa); font-weight:700 }
+  .card-estado ol, .card-estado ul{ margin-top:14px; padding-left:1.4em; color:var(--tinta-suave) }
+  .card-estado ul{ list-style:none; padding-left:0 }
+  .card-estado ol li{ margin-top:8px }
+  .card-estado ul li{ position:relative; padding-left:1.3em; margin-top:8px }
+  .card-estado ul li::before{ content:"—"; position:absolute; left:0; color:var(--framboesa); font-weight:700 }
   .card-estado .acoes{ display:flex; gap:12px; flex-wrap:wrap; margin-top:22px }
   .card-estado a.btn{ display:inline-flex }
+  .diag-lista li{ display:flex; align-items:flex-start; gap:8px; font-size:.92rem }
+  .diag-lista .ic{ margin-top:2px }
+  .diag-lista .ok{ color:var(--salvia) } .diag-lista .nok{ color:var(--ambar) }
   .sem-resultado{
     display:none; width:100%; text-align:center; padding:30px 0 60px;
     font-family:'Caveat',cursive; font-size:1.7rem; color:var(--tinta-suave);
@@ -244,6 +249,49 @@
     .lb-janela img{ max-height:52vh }
   }
 
+  /* ============ modal do gerador de fotos.json ============ */
+  .modal{
+    position:fixed; inset:0; z-index:90; display:grid; place-items:center; padding:20px;
+    visibility:hidden; opacity:0; transition:opacity .25s ease, visibility .25s;
+  }
+  .modal.aberto{ visibility:visible; opacity:1 }
+  .modal-fundo{ position:absolute; inset:0; background:rgba(26,19,14,.7); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px) }
+  .cartao-modal{
+    position:relative; background:var(--creme); border-radius:18px; width:min(660px,94vw);
+    max-height:88vh; overflow:auto; padding:28px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.55);
+    transform:translateY(14px) scale(.97); transition:transform .25s cubic-bezier(.2,.8,.3,1.2);
+  }
+  .modal.aberto .cartao-modal{ transform:none }
+  .cartao-modal h2{ font-family:'Fraunces',serif; font-size:1.45rem; margin-bottom:4px }
+  .cartao-modal .sub{ color:var(--tinta-suave); font-size:.95rem }
+  .fechar-modal{
+    position:absolute; top:14px; right:14px; width:38px; height:38px; border-radius:50%;
+    border:none; background:rgba(42,33,27,.08); color:var(--tinta); cursor:pointer;
+    display:grid; place-items:center; transition:background .2s;
+  }
+  .fechar-modal:hover{ background:rgba(42,33,27,.16) }
+  .zona-drop{
+    margin-top:18px; border:2px dashed rgba(42,33,27,.35); border-radius:14px;
+    padding:34px 20px; text-align:center; cursor:pointer; transition:background .2s, border-color .2s;
+  }
+  .zona-drop:hover, .zona-drop.sobre{ background:rgba(194,56,90,.06); border-color:var(--framboesa) }
+  .zona-drop .ic{ opacity:.5; margin-bottom:6px }
+  .zona-drop strong{ display:block; font-size:1.05rem }
+  .zona-drop span{ color:var(--tinta-suave); font-size:.88rem }
+  .lista-gerada{ margin-top:16px }
+  .lista-gerada .conta-gerada{ font-weight:700; margin-bottom:8px }
+  .lista-gerada .amostra{ color:var(--tinta-suave); font-size:.85rem; margin-bottom:12px; word-break:break-all }
+  .saida-json textarea{
+    width:100%; height:140px; font-family:ui-monospace,monospace; font-size:.78rem;
+    border:1.5px solid var(--hair); border-radius:10px; padding:10px;
+    background:#FBF7EE; color:var(--tinta); resize:vertical;
+  }
+  .passo-final{
+    margin-top:14px; background:rgba(127,160,124,.12); border-radius:12px; padding:14px 16px; font-size:.92rem;
+  }
+  .passo-final strong{ color:var(--tinta) }
+
   .toasts{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%); z-index:100; display:flex; flex-direction:column; gap:10px; align-items:center; pointer-events:none }
   .toast{
     display:flex; align-items:center; gap:10px; background:var(--tinta); color:var(--papel);
@@ -259,6 +307,12 @@
   footer{ text-align:center; padding:60px 22px 70px; color:var(--tinta-suave) }
   footer .coracao{ color:var(--framboesa); vertical-align:-3px }
   footer p + p{ font-size:.85rem; margin-top:6px; opacity:.75 }
+  .btn-manutencao{
+    margin-top:18px; background:none; border:none; cursor:pointer; color:var(--tinta-suave);
+    font-family:'Karla',sans-serif; font-size:.82rem; text-decoration:underline dotted;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .btn-manutencao:hover{ color:var(--framboesa) }
 
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{ animation:none!important; transition:none!important }
@@ -327,7 +381,10 @@
 
   <footer>
     <p>Feito com <svg class="coracao ic" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-8-5.5-10.5-10C-.4 7 2 3.5 5.7 3.5 8.2 3.5 10.3 5 12 7c1.7-2 3.8-3.5 6.3-3.5C22 3.5 24.4 7 22.5 11 20 15.5 12 21 12 21z"/></svg> carinho para a família da Daphnye — aproveitem as memórias.</p>
-    <p>As fotos ficam guardadas no GitHub e o zip é montado aqui no seu navegador.</p>
+    <p>O zip é montado aqui no seu navegador — nada é enviado para lugar nenhum.</p>
+    <button class="btn-manutencao" id="btnRodapeGerador" type="button">
+      <i data-ic="arquivo" data-tam="14"></i> Ferramenta: gerar fotos.json
+    </button>
   </footer>
 </main>
 
@@ -350,27 +407,59 @@
   </div>
 </div>
 
+<!-- modal gerador de fotos.json -->
+<div class="modal" id="modalGerador" role="dialog" aria-modal="true" aria-label="Gerador de fotos.json">
+  <div class="modal-fundo" id="modalFundo"></div>
+  <div class="cartao-modal">
+    <button class="fechar-modal" id="fecharModal" aria-label="Fechar"><i data-ic="x" data-tam="18"></i></button>
+    <h2>Gerar o arquivo <code>fotos.json</code></h2>
+    <p class="sub">Este arquivo diz ao site quais fotos existem. Funciona na Vercel, Netlify, GitHub Pages — em qualquer lugar, até com repositório privado.</p>
+
+    <div class="zona-drop" id="zonaDrop" tabindex="0" role="button" aria-label="Escolher a pasta com as fotos">
+      <div><i data-ic="pasta" data-tam="34"></i></div>
+      <strong>Arraste aqui a pasta com as fotos</strong>
+      <span>ou clique para escolher a pasta no seu computador</span>
+    </div>
+    <input type="file" id="inpPasta" webkitdirectory multiple hidden>
+
+    <div class="lista-gerada" id="listaGerada" hidden>
+      <p class="conta-gerada" id="contaGerada"></p>
+      <p class="amostra" id="amostraGerada"></p>
+      <div class="saida-json">
+        <textarea id="txtJson" readonly aria-label="Conteúdo do fotos.json"></textarea>
+      </div>
+      <div class="acoes" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px">
+        <button class="btn btn-primario btn-mini" id="btnBaixarJson" type="button"><i data-ic="download" data-tam="16"></i>Baixar fotos.json</button>
+        <button class="btn btn-fantasma btn-mini" id="btnCopiarJson" type="button"><i data-ic="copiar" data-tam="16"></i>Copiar conteúdo</button>
+      </div>
+      <div class="passo-final">
+        <strong>Último passo:</strong> salve este arquivo na <strong>raiz do projeto</strong> (ao lado do <code>index.html</code>) e faça o commit/push. A Vercel publica sozinha e as fotos aparecem.
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 /* ================================================================
-   ⚙️  CONFIGURAÇÃO — 99% das vezes NÃO precisa mexer em NADA.
+   ⚙️  CONFIGURAÇÃO — normalmente NÃO precisa mexer em NADA.
    ----------------------------------------------------------------
-   O site varre o repositório INTEIRO e acha imagens em qualquer
-   pasta — raiz, /fotos, /imagens, tanto faz. Só preencha algo
-   aqui se estiver testando FORA do GitHub Pages.
+   O site procura as fotos nesta ordem:
+   1) fotos.json  → arquivo na raiz do projeto (funciona em QUALQUER
+      hospedagem: Vercel, Netlify, GitHub Pages… até repo privado).
+      Gere o seu pelo botão "Ferramenta: gerar fotos.json" no rodapé.
+   2) API do GitHub → modo automático (repo público; preencha os
+      campos abaixo se estiver FORA do github.io).
 ================================================================ */
 const CONFIG = {
-  usuario:     "",   // ex.: "maria-silva"   (só se NÃO estiver no GitHub Pages)
-  repositorio: "",   // ex.: "fotos-daphnye" (só se NÃO estiver no GitHub Pages)
-  branch:      "",   // vazio = descobre sozinho (main, master, gh-pages…)
-  pasta:       "",   // vazio = procura no repositório INTEIRO (recomendado)
+  usuario:     "",   // ex.: "maria-silva"   — só para o modo GitHub fora do Pages
+  repositorio: "",   // ex.: "fotos-daphnye" — só para o modo GitHub fora do Pages
+  branch:      "",   // vazio = descobre sozinho
   dataDaFesta: "",   // opcional — ex.: "14 de março de 2025"
-  // PLANO B (emergência): se nada der certo, liste os nomes dos
-  // arquivos aqui e o site ignora a detecção automática:
-  // listaManual: ["IMG_0001.jpg", "IMG_0002.jpg"]
-  listaManual: []
+  miniaturasRapidas: true,  // acelera a galeria; se algo estranho, mude para false
+  listaManual: []    // plano C: ["fotos/IMG_0001.jpg", ...] — ignora tudo o resto
 };
 
 /* ============ utilidades ============ */
@@ -389,6 +478,9 @@ const ICONES = {
   calendario:'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
   setaBaixo:'<path d="M12 4v14"/><path d="m6 12 6 6 6-6"/>',
   github:'<path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/>',
+  arquivo:'<path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8Z"/><path d="M14 3v5h5"/>',
+  copiar:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+  pasta:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/>',
   loader:'<path d="M21 12a9 9 0 1 1-6.2-8.56"/>'
 };
 function icone(nome, tam = 18){
@@ -479,7 +571,11 @@ const Confete = (() => {
   return { chuva, pop };
 })();
 
-/* ============ descobrir usuário/repositório ============ */
+/* ============ diagnósticos (aparecem nos cartões de erro) ============ */
+const diag = [];
+function registrarDiag(rotulo, ok, detalhe){ diag.push({ rotulo, ok, detalhe }); }
+
+/* ============ descobrir usuário/repositório (modo GitHub) ============ */
 function resolverCfg(){
   let usuario = (CONFIG.usuario || '').trim(), repo = (CONFIG.repositorio || '').trim();
   if (!usuario || !repo){
@@ -490,20 +586,15 @@ function resolverCfg(){
       usuario = usuario || dono;
       repo = repo || (seg.length ? seg[0] : dono);
     } else {
-      throw new ErroPag('cfg');
+      throw new ErroPag('cfg'); // fora do GitHub Pages e sem CONFIG → não há como adivinhar
     }
   }
-  return {
-    usuario, repo,
-    pasta: (CONFIG.pasta || '').trim().replace(/^\/+|\/+$/g, ''),
-    branch: (CONFIG.branch || '').trim()
-  };
+  return { usuario, repo, branch:(CONFIG.branch || '').trim() };
 }
 
 /* ============ API do GitHub (com cache p/ evitar limite por hora) ============ */
-const CHAVE_CACHE = 'album-daphnye:v2';
-const TTL_CACHE = 5 * 60 * 1000; // 5 minutos
-
+const CHAVE_CACHE = 'album-daphnye:v3';
+const TTL_CACHE = 5 * 60 * 1000;
 async function gh(url){
   const r = await fetch(url, { headers:{ 'Accept':'application/vnd.github+json' } });
   if (r.status === 404) throw new ErroPag('e404');
@@ -523,42 +614,48 @@ function gravarCache(cfg, b, p){
   try { localStorage.setItem(CHAVE_CACHE, JSON.stringify({ q:Date.now(), u:cfg.usuario, r:cfg.repositorio, b, p })); } catch(_){}
 }
 function limparCache(){ try { localStorage.removeItem(CHAVE_CACHE); } catch(_){} }
-
 const rawUrl = (u, r, b, path) =>
   `https://raw.githubusercontent.com/${u}/${r}/${b}/${path.split('/').map(encodeURIComponent).join('/')}`;
 
 /* ============ estado da página (erros / vazio) ============ */
 function mostrarEstado(chave, cfg){
   const est = $('#estado');
+  const botaoGerador = `<button class="btn btn-primario btn-mini js-abrir-gerador" type="button">${icone('arquivo', 16)} Gerar meu fotos.json</button>`;
   const linkRepo = cfg ? `<a class="btn btn-fantasma btn-mini" href="https://github.com/${cfg.usuario}/${cfg.repositorio}" target="_blank" rel="noopener">${icone('github', 16)} Abrir o repositório</a>` : '';
-  const linkApi  = cfg ? `<a class="btn btn-fantasma btn-mini" href="https://api.github.com/repos/${cfg.usuario}/${cfg.repositorio}" target="_blank" rel="noopener">${icone('lupa', 16)} Ver o que o GitHub responde</a>` : '';
+  const testeJson = `<a class="btn btn-fantasma btn-mini" href="fotos.json" target="_blank" rel="noopener">${icone('lupa', 16)} Testar fotos.json</a>`;
+
   const blocos = {
-    cfg: { titulo:'Falta um detalhe na configuração', itens:[
-      'Você está abrindo o arquivo direto do computador (fora do GitHub Pages). Ou publica o site no Pages — aí funciona sem configurar nada — ou preenche <code>usuario</code> e <code>repositorio</code> no bloco CONFIG, no início do script.' ]},
-    e404: { titulo:'Repositório não encontrado (ou é privado)', itens:[
-      'Confira se <code>usuario</code> e <code>repositorio</code> estão escritos certinho no bloco CONFIG.',
-      'O repositório precisa estar <strong>público</strong> para o GitHub Pages gratuito funcionar.',
-      'Abra o repositório no link abaixo e veja se as fotos aparecem lá dentro.' ], acoes:true },
+    cfg: { titulo:'Este site está fora do GitHub Pages', itens:[
+      'O modo automático do GitHub só se ativa em endereços <code>*.github.io</code> — na Vercel ele não sabe qual é o seu repositório.',
+      '<strong>Caminho garantido:</strong> gere o arquivo <code>fotos.json</code> com o botão abaixo, salve na raiz do projeto (ao lado do <code>index.html</code>) e publique.',
+      'Alternativa: se o seu repositório GitHub for <strong>público</strong>, preencha <code>usuario</code> e <code>repositorio</code> no bloco CONFIG do script.' ], acoes: botaoGerador },
+    e404: { titulo:'Repositório não encontrado — ou é privado', itens:[
+      'A API do GitHub só enxerga repositórios <strong>públicos</strong>. Se o seu é privado (comum em projetos importados na Vercel), ela responde 404 — sem erro, sem foto.',
+      '<strong>Caminho garantido:</strong> use o <code>fotos.json</code> (botão abaixo). Ele funciona até com repositório privado.',
+      'Se acha que o repo é público, confira o nome dele no link abaixo.' ], acoes: botaoGerador + linkRepo },
     e403: { titulo:'O GitHub pediu uma pausa', itens:[
-      'O GitHub limita as consultas por hora a cada visitante. Espere alguns minutos e recarregue.',
-      'Esta versão guarda o resultado em cache, então isso deve acontecer bem raramente.' ]},
+      'O GitHub limita as consultas por hora a cada visitante. Espere alguns minutos e tente de novo.',
+      'Você também pode eliminar essa dependência usando o <code>fotos.json</code> (botão abaixo).' ], acoes: botaoGerador },
+    vazio: { titulo:'Achei a fonte, mas nenhuma foto nela', itens:[
+      'Se você usa <code>fotos.json</code>: abra-o e veja se a lista está preenchida.',
+      'Se usa o modo GitHub: confira no link abaixo se as fotos aparecem na lista de arquivos do repositório (upload só vale depois do commit).',
+      'Contam como foto: <code>jpg, png, webp, gif, bmp, avif, heic, tiff</code>.' ], acoes: botaoGerador + linkRepo },
     rede: { titulo:'Não consegui falar com o GitHub', itens:[
-      'Confira a sua conexão com a internet e tente de novo.' ]},
-    vazio: { titulo:'Achei o repositório, mas nenhuma foto nele', itens:[
-      'Procurei imagens (<code>jpg, jpeg, png, webp, gif, bmp, avif, heic, heif, tiff</code>) no repositório inteiro, em qualquer pasta.',
-      'Se as fotos não aparecem no link abaixo, elas não foram enviadas/commitadas de verdade — confira a aba "Files" do repositório.',
-      'Fotos <code>.HEIC</code> de iPhone contam como foto sim (dá para baixar; a prévia pode não abrir em alguns navegadores).' ], acoes:true }
+      'Confira a sua conexão com a internet e tente de novo.' ], acoes: botaoGerador },
+    falha: { titulo:'Nada encontrado — aqui está o diagnóstico', itens: diag.map(d =>
+      `<span class="${d.ok ? 'ok' : 'nok'}" style="display:inline-flex;align-items:flex-start;gap:8px">${icone(d.ok ? 'check' : 'alerta', 15)}<span><strong>${esc(d.rotulo)}</strong> — ${esc(d.detalhe)}</span></span>`),
+      listaClasse:'diag-lista', acoes: botaoGerador + testeJson }
   };
   const b = blocos[chave] || blocos.rede;
   est.innerHTML = `<div class="card-estado">
       <div class="cabeca">${icone('alerta', 26)}<h2>${b.titulo}</h2></div>
-      <ul>${b.itens.map(i => `<li>${i}</li>`).join('')}</ul>
-      <div class="acoes">
-        ${b.acoes ? linkRepo + linkApi : ''}
+      <${b.listaClasse ? 'ul class="' + b.listaClasse + '"' : 'ul'}>${(b.itens || []).map(i => `<li>${i}</li>`).join('')}</ul>
+      <div class="acoes">${b.acoes || ''}
         <button class="btn btn-fantasma" id="btnTentar">${icone('loader', 16)} Tentar de novo</button>
       </div>
     </div>`;
   preencherIcones(est);
+  est.querySelectorAll('.js-abrir-gerador').forEach(x => x.addEventListener('click', abrirGerador));
   $('#btnTentar').addEventListener('click', () => { limparCache(); iniciar(); });
 }
 
@@ -574,6 +671,13 @@ const EhFoto = /\.(jpe?g|jfif|png|gif|webp|bmp|avif|heic|heif|tiff?)$/i;
 const nomeBonito = n => n.replace(/\.[^.]+$/, '').replace(/[_\-]+/g, ' ').trim() || n;
 const uThumb  = u => CONFIG.miniaturasRapidas ? `https://images.weserv.nl/?url=${encodeURIComponent(u)}&w=640&output=webp&q=82` : u;
 const uGrande = u => CONFIG.miniaturasRapidas ? `https://images.weserv.nl/?url=${encodeURIComponent(u)}&w=1600&output=webp&q=86` : u;
+const objetoFoto = caminhoOuUrl => {
+  const url = /^https?:\/\//i.test(caminhoOuUrl)
+    ? caminhoOuUrl
+    : new URL(String(caminhoOuUrl).replace(/^\/+/, ''), location.href).href;
+  const nome = url.split('/').pop().split('?')[0];
+  return { nome, nomeBonito: nomeBonito(nome), urlDownload: url, thumb: uThumb(url) };
+};
 
 function esqueletos(n = 6){
   const mural = $('#mural'); mural.innerHTML = '';
@@ -597,7 +701,6 @@ function cartao(foto, i){
     </div>
     <figcaption class="legenda">${esc(foto.nomeBonito)}</figcaption>`;
   const img = el.querySelector('img');
-  // cadeia de fallback: miniatura otimizada → arquivo original → cartaz "baixe para ver"
   img.onerror = () => {
     if (img.dataset.planoB !== '1' && !img.src.includes(foto.urlDownload)){
       img.dataset.planoB = '1';
@@ -776,6 +879,10 @@ lbImg.addEventListener('error', () => {
  $('#lbProx').addEventListener('click', () => navegar(1));
  $('#lbBaixar').addEventListener('click', e => baixarFoto(fotos[ordem[posLb]], e.currentTarget));
 document.addEventListener('keydown', e => {
+  if ($('#modalGerador').classList.contains('aberto')){
+    if (e.key === 'Escape') fecharGerador();
+    return;
+  }
   if (!lb.classList.contains('aberto')) return;
   if (e.key === 'Escape') fecharLightbox();
   if (e.key === 'ArrowRight') navegar(1);
@@ -787,6 +894,79 @@ lb.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - tX, dy = e.changedTouches[0].clientY - tY;
   if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) navegar(dx < 0 ? 1 : -1);
 }, { passive:true });
+
+/* ============ gerador de fotos.json (roda 100% no seu navegador) ============ */
+const modal = $('#modalGerador'), zonaDrop = $('#zonaDrop'), inpPasta = $('#inpPasta');
+function abrirGerador(){ modal.classList.add('aberto'); document.body.classList.add('sem-rolagem'); }
+function fecharGerador(){ modal.classList.remove('aberto'); document.body.classList.remove('sem-rolagem'); }
+ $('#btnRodapeGerador').addEventListener('click', abrirGerador);
+ $('#fecharModal').addEventListener('click', fecharGerador);
+ $('#modalFundo').addEventListener('click', fecharGerador);
+zonaDrop.addEventListener('click', () => inpPasta.click());
+zonaDrop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); inpPasta.click(); } });
+['dragover','dragenter'].forEach(ev => zonaDrop.addEventListener(ev, e => { e.preventDefault(); zonaDrop.classList.add('sobre'); }));
+['dragleave','drop'].forEach(ev => zonaDrop.addEventListener(ev, e => { e.preventDefault(); zonaDrop.classList.remove('sobre'); }));
+zonaDrop.addEventListener('drop', async e => {
+  const itens = [...(e.dataTransfer?.items || [])];
+  const entradas = itens.map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+  if (!entradas.length) return;
+  const achados = [];
+  await Promise.all(entradas.map(en => varrerEntry(en, '', achados)));
+  processarSelecao(achados);
+});
+function varrerEntry(entry, prefixo, saida){
+  return new Promise(res => {
+    if (entry.isFile){
+      entry.file(f => { saida.push({ arquivo:f, caminho: prefixo + f.name }); res(); }, () => res());
+    } else if (entry.isDirectory){
+      const leitor = entry.createReader();
+      const lerTudo = () => leitor.readEntries(async lote => {
+        if (!lote.length) return res();
+        await Promise.all(lote.map(e2 => varrerEntry(e2, prefixo + entry.name + '/', saida)));
+        lerTudo();
+      }, () => res());
+      lerTudo();
+    } else res();
+  });
+}
+inpPasta.addEventListener('change', () => {
+  processarSelecao([...inpPasta.files].map(f => ({ arquivo:f, caminho:f.webkitRelativePath || f.name })));
+});
+function processarSelecao(itens){
+  const imagens = itens
+    .filter(i => EhFoto.test(i.caminho) && !i.caminho.split('/').some(s => s.startsWith('.')))
+    .map(i => i.caminho)
+    .sort((a, b) => a.localeCompare(b, 'pt', { numeric:true }));
+  if (!imagens.length){
+    toast('Não achei nenhuma imagem na pasta selecionada.', 'erro');
+    return;
+  }
+  const json = JSON.stringify({ fotos: imagens }, null, 2);
+  $('#contaGerada').textContent = `${imagens.length} foto(s) encontrada(s) ✓`;
+  $('#amostraGerada').textContent = imagens.slice(0, 5).join(' · ') + (imagens.length > 5 ? ' …' : '');
+  $('#txtJson').value = json;
+  $('#listaGerada').hidden = false;
+  toast(`${imagens.length} fotos listadas — agora baixe o arquivo.`);
+}
+ $('#btnBaixarJson').addEventListener('click', () => {
+  const blob = new Blob([$('#txtJson').value], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'fotos.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+});
+ $('#btnCopiarJson').addEventListener('click', async () => {
+  const txt = $('#txtJson').value;
+  try {
+    await navigator.clipboard.writeText(txt);
+    toast('Copiado! Cole num arquivo salvo como fotos.json.');
+  } catch {
+    $('#txtJson').select();
+    document.execCommand('copy');
+    toast('Copiado!');
+  }
+});
 
 /* ============ ligar os cabos ============ */
 document.querySelectorAll('.js-zip').forEach(b => b.addEventListener('click', baixarTudo));
@@ -807,85 +987,98 @@ document.querySelectorAll('.js-zip').forEach(b => b.addEventListener('click', ba
 const topbar = $('#topbar');
 addEventListener('scroll', () => topbar.classList.toggle('visivel', scrollY > 420), { passive:true });
 
-/* ============ boot: achar as fotos no repositório inteiro ============ */
+/* ============ boot: buscar as fotos (fotos.json → GitHub → falha) ============ */
 async function iniciar(){
   esqueletos();
   $('#estado').innerHTML = '';
-  try {
-    const cfg = resolverCfg();
+  diag.length = 0;
 
-    /* ---- PLANO B: lista manual no CONFIG ---- */
-    if (CONFIG.listaManual.length){
-      const branch = cfg.branch || 'main';
-      fotos = CONFIG.listaManual.map(item => {
-        const url = /^https?:\/\//i.test(item)
-          ? item
-          : rawUrl(cfg.usuario, cfg.repositorio, branch, String(item).replace(/^\/+/, ''));
-        const nome = url.split('/').pop().split('?')[0];
-        return { nome, nomeBonito: nomeBonito(nome), urlDownload: url, thumb: uThumb(url) };
-      });
-      if (!fotos.length){ $('#mural').innerHTML = ''; mostrarEstado('vazio', cfg); return; }
+  /* ---- PLANO C: lista manual no CONFIG ---- */
+  if (CONFIG.listaManual.length){
+    fotos = CONFIG.listaManual.map(objetoFoto);
+    if (!fotos.length){ $('#mural').innerHTML = ''; mostrarEstado('vazio', null); return; }
+    renderFotos();
+    return;
+  }
+
+  /* ---- 1) fotos.json (o caminho que funciona em qualquer host) ---- */
+  try {
+    const r = await fetch('fotos.json', { cache:'no-cache' });
+    if (r.ok){
+      const dados = JSON.parse(await r.text());
+      const arr = Array.isArray(dados) ? dados
+                : (Array.isArray(dados.fotos) ? dados.fotos : null);
+      if (!arr) throw new Error('formato inesperado');
+      if (dados && typeof dados === 'object' && dados.dataDaFesta && !CONFIG.dataDaFesta){
+        $('#pillDataTxt').textContent = dados.dataDaFesta;
+        $('#pillData').hidden = false;
+      }
+      if (!arr.length){
+        registrarDiag('fotos.json', true, 'existe, mas está vazio');
+        $('#mural').innerHTML = '';
+        mostrarEstado('vazio', null);
+        return;
+      }
+      fotos = arr.map(objetoFoto);
+      registrarDiag('fotos.json', true, `${fotos.length} foto(s) carregada(s)`);
+      console.log(`%cÁlbum da Daphnye%c ${fotos.length} foto(s) via fotos.json`,
+        'background:#C2385A;color:#FFF6EC;padding:2px 8px;border-radius:6px;font-weight:bold', '');
       renderFotos();
       return;
     }
+    registrarDiag('fotos.json', false, `o servidor respondeu ${r.status} (arquivo ausente)`);
+  } catch {
+    registrarDiag('fotos.json', false, 'não existe ou tem formato inválido');
+  }
 
-    /* ---- caminho normal: cache → API ---- */
+  /* ---- 2) modo automático GitHub ---- */
+  try {
+    const cfg = resolverCfg();
     const cache = lerCache(cfg);
     let branch, caminhos;
-
     if (cache){
       branch = cache.b; caminhos = cache.p;
     } else {
-      // 1) descobre o branch padrão (main, master… tanto faz)
       const meta = await gh(`https://api.github.com/repos/${cfg.usuario}/${cfg.repositorio}`);
       branch = meta.default_branch || 'main';
-
-      // 2) pede a ÁRVORE inteira do repositório numa chamada só
       let blobs = [];
       try {
         const arv = await gh(`https://api.github.com/repos/${cfg.usuario}/${cfg.repositorio}/git/trees/${encodeURIComponent(branch)}?recursive=1`);
-        blobs = filtrarImagens(arv.tree || [], cfg);
+        blobs = (arv.tree || []).filter(a =>
+          a.type === 'blob' && EhFoto.test(a.path) &&
+          !a.path.split('/').some(seg => seg.startsWith('.'))
+        );
       } catch (e) { if (!(e instanceof ErroPag)) throw e; }
-
-      // 3) se não achou nada e o Pages pode estar no branch gh-pages, tenta lá
       if (!blobs.length && !cfg.branch && branch !== 'gh-pages'){
         try {
           const arv2 = await gh(`https://api.github.com/repos/${cfg.usuario}/${cfg.repositorio}/git/trees/gh-pages?recursive=1`);
-          const b2 = filtrarImagens(arv2.tree || [], cfg);
+          const b2 = (arv2.tree || []).filter(a => a.type === 'blob' && EhFoto.test(a.path));
           if (b2.length){ branch = 'gh-pages'; blobs = b2; }
         } catch(_){}
       }
       caminhos = blobs.map(a => a.path);
       gravarCache(cfg, branch, caminhos);
     }
-
     if (!caminhos.length){ $('#mural').innerHTML = ''; mostrarEstado('vazio', cfg); return; }
-
-    fotos = caminhos.map(path => {
-      const url = rawUrl(cfg.usuario, cfg.repositorio, branch, path);
-      const nome = path.split('/').pop();
-      return { nome, nomeBonito: nomeBonito(nome), urlDownload: url, thumb: uThumb(url) };
-    });
-    console.log(`%cÁlbum da Daphnye%c ${fotos.length} foto(s) · branch "${branch}" · repositório varrido inteiro`,
+    fotos = caminhos.map(path => objetoFoto(rawUrl(cfg.usuario, cfg.repositorio, branch, path)));
+    registrarDiag('API do GitHub', true, `${fotos.length} foto(s) · branch "${branch}"`);
+    console.log(`%cÁlbum da Daphnye%c ${fotos.length} foto(s) via GitHub · branch "${branch}"`,
       'background:#C2385A;color:#FFF6EC;padding:2px 8px;border-radius:6px;font-weight:bold', '');
     renderFotos();
+    return;
   } catch (err){
-    $('#mural').innerHTML = '';
-    mostrarEstado(err instanceof ErroPag ? err.message : 'rede', null);
+    if (err instanceof ErroPag){
+      registrarDiag('API do GitHub', false, err.message === 'e404' ? 'repositório não encontrado (privado?)' : err.message);
+      $('#mural').innerHTML = '';
+      mostrarEstado(err.message === 'cfg' ? 'cfg' : (err.message === 'falha' ? 'falha' : err.message), null);
+      return;
+    }
+    registrarDiag('API do GitHub', false, 'sem conexão');
   }
-}
 
-function filtrarImagens(tree, cfg){
-  let blobs = tree.filter(a =>
-    a.type === 'blob' && EhFoto.test(a.path) &&
-    !a.path.split('/').some(seg => seg.startsWith('.'))
-  );
-  if (cfg.pasta){
-    const alvo = cfg.pasta.toLowerCase();
-    const dentro = blobs.filter(a => a.path.toLowerCase().startsWith(alvo + '/') || a.path.toLowerCase() === alvo);
-    if (dentro.length) blobs = dentro;
-  }
-  return blobs;
+  /* ---- 3) nada deu certo ---- */
+  $('#mural').innerHTML = '';
+  mostrarEstado('falha', null);
 }
 
 /* ============ partida ============ */
